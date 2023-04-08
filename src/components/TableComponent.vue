@@ -3,7 +3,9 @@
         <table class="table text-white m-0">
             <thead>
                 <tr>
-                    <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''"><input class="form-check-input" name="teste" type="checkbox" value="" id="defaultCheck1"></th>
+                    <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">
+                        <input class="form-check-input" name="teste" type="checkbox" v-model="checkboxModel">
+                    </th>
                     <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">Title</th>
                     <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">Priority</th>
                     <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">Date</th>
@@ -12,7 +14,7 @@
             </thead>
             <tbody>
                 <tr v-for="(item, index) in 20" :key="index">
-                    <td><input class="form-check-input shadow-none" name="teste" type="checkbox" value="" id="defaultCheck1"></td>
+                    <td><input class="form-check-input shadow-none" name="selectLine" type="checkbox"></td>
                     <td>Test</td>
                     <td><span class="badge rounded-pill text-bg-secondary">Not important</span></td>
                     <td>12/12/2023</td>
@@ -27,18 +29,29 @@
 export default {
     data() {
         return {
-            sticky: false
+            sticky: false,
+            checkboxModel: false,
         }
     },
     methods: {
         onScroll(event) {
-            console.log(event.target)
             if (event.target.scrollTop > 0) {
                 this.sticky = true;
-            } else {
-                this.sticky = false;
+                return
             }
+            this.sticky = false;
+        },
+        toggleCheckboxes() {
+            var checkboxes = document.querySelectorAll('.table-list table tbody tr td input[type="checkbox"]')
+            checkboxes.forEach((checkbox) => {
+                checkbox.checked = this.checkboxModel
+            })
         }
-    }
+    },
+    watch: {
+        checkboxModel(vNew, vOld) {
+            this.toggleCheckboxes()
+        }
+    },
 }
 </script>
