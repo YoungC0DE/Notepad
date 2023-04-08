@@ -14,26 +14,53 @@ body {
   background-color: #161a27;
 }
 
+#app {
+  height: 100%;
+  width: 100%;
+}
+
 html {
   height: 100%;
 }
 
 .main-container {
   display: flex;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   text-align: center;
   flex-direction: column;
   gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-login,
+.container-register {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  width: 250px;
+  height: 85vh;
+  gap: 10px;
 }
 
 .main-container .table-list::-webkit-scrollbar {
   display: none;
 }
 
+.container-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 10px;
+}
+
 .main-container header,
 .table-list {
-  width: auto;
+  width: 100%;
   border: 1px solid #cbc;
   padding: 15px 5px;
   border-radius: 4px;
@@ -77,6 +104,18 @@ html {
     min-width: 0px;
   }
 
+  .main-container {
+    width: auto;
+  }
+  #app,
+  body {
+    height: auto;
+  }
+
+  .container-home {
+    width: 100%;
+  }
+
   .table-list {
     min-height: 300px;
     max-height: 300px;
@@ -109,6 +148,13 @@ html {
   width: 100%;
   font-family: Varela Round, sans-serif;
   background-color: #c2c4ff21 !important;
+  color: white !important;
+}
+
+.container-login input,
+.container-register input {
+  color: white !important;
+  background-color: #c2c4ff21 !important;
 }
 
 .main-container header nav div form button {
@@ -116,6 +162,12 @@ html {
   padding: 5px 20px;
   cursor: pointer;
   border-radius: 4px;
+}
+
+.btn-loggout {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
 }
 
 .circles {
