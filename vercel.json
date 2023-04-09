@@ -9,14 +9,20 @@
       }
     }
   ],
+  "build": {
+    "env": {
+      "PATH": "/usr/local/bin:$PATH"
+    },
+    "command": "npm run build"
+  },
   "routes": [
     {
       "src": "/api/(.*)",
       "dest": "/database/db.json"
     },
     {
-     "src": "/[^.]+",
-      "dest": "/", 
+      "src": "/[^.]+",
+      "dest": "/",
       "status": 200
     }
   ]
