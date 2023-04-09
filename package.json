@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vue-cli-service build && cp database/db.json dist/database/db.json",
+    "build": "npm install -g @vue/cli & vue-cli-service build && cp database/db.json dist/database/db.json",
     "preview": "vite preview",
     "test:unit": "vitest",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
