@@ -15,8 +15,9 @@
       "dest": "/database/db.json"
     },
     {
-      "src": "/(.*)",
-      "dest": "/src/$1"
+     "src": "/[^.]+",
+      "dest": "/", 
+      "status": 200
     }
   ]
 }
