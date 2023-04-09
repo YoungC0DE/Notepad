@@ -3,6 +3,7 @@
     <h1 class="text-white">TASKLIST</h1>
     <HeaderComponent />
     <TableComponent />
+    <DetailsModal />
   </div>
   <LogoutButton />
 </template>
@@ -11,9 +12,10 @@
 import HeaderComponent from '@/components/HeaderComponent.vue'
 import LogoutButton from '@/components/LogoutButton.vue'
 import TableComponent from '@/components/TableComponent.vue'
+import DetailsModal from '@/components/Modals/DetailsModal.vue'
 
 export default {
-  components: { HeaderComponent, LogoutButton, TableComponent },
+  components: { HeaderComponent, LogoutButton, TableComponent, DetailsModal },
   data() {
     return {
       sticky: false

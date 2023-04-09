@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build"
+    },
+    {
+      "src": "server.js",
+      "use": "@now/node",
+      "config": {
+        "maxLambdaSize": "50mb"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "https://task-list-2.vercel.app/db/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "public/$1"
+    },
+    {
+      "src": "/[^.]+",
+      "dest": "/",
+      "status": 200
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

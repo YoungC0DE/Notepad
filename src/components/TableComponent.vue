@@ -14,11 +14,19 @@
             </thead>
             <tbody>
                 <tr v-for="(item, index) in 20" :key="index">
-                    <td><input class="form-check-input shadow-none" name="selectLine" type="checkbox"></td>
+                    <td>
+                        <input class="form-check-input shadow-none" name="selectLine" type="checkbox">
+                    </td>
                     <td>Test</td>
-                    <td><span class="badge rounded-pill text-bg-secondary">Not important</span></td>
+                    <td>
+                        <span class="badge rounded-pill text-bg-secondary">Not important</span>
+                    </td>
                     <td>12/12/2023</td>
-                    <td><button type="button" class="btn btn-dark shadow-none"><i class="bi bi-eye"></i></button></td>
+                    <td>
+                        <button type="button" class="btn btn-dark shadow-none" data-bs-toggle="modal" data-bs-target="#DetailsModal">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>

@@ -4,6 +4,16 @@
   box-sizing: border-box;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: none;
+  transition: background-color 9999s ease-in-out 0s;
+  color: white !important;
+  -webkit-text-fill-color: white;
+}
+
 body {
   height: 100%;
   width: 100%;

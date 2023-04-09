@@ -15,17 +15,47 @@
     </div>
 </template>
 
-<script>
+<script lang="js">
+import axios from "axios";
+
 export default {
     data() {
         return {
-            email: null,
-            password: null,
+            email: '',
+            password: '',
         }
     },
     methods: {
+        Validate() {
+            if (!this.email || !this.password) {
+                this.$toast.error('It is necessary to fill in all fields', {
+                    position: "top-right"
+                })
+                return false
+            }
+            return true
+        },
         Login() {
-            this.$router.push({ name: 'Home' })
+            if (!this.Validate()) {
+                return false
+            }
+            axios.get(import.meta.env.VITE_URL_API + `/users?email=${this.email.toLowerCase()}&password=${btoa(this.password)}`)
+                .then(({ data }) => {
+                    if (data.length > 0) {
+                        this.$toast.success(`Welcome Sr(a). ${data[0].name}`, {
+                            position: "top-right"
+                        })
+                        this.$router.push({ name: 'Home' })
+                        return
+                    }
+                    this.$toast.error('Password incorrect', {
+                        position: "top-right"
+                    })
+                }).catch(() => {
+                    this.$toast.error('Error on login', {
+                        position: "top-right"
+                    })
+                })
         }
     }
 }
