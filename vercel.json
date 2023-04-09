@@ -16,11 +16,11 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "https://task-list-2.vercel.app/db/$1"
+      "dest": "/database/db.json"
     },
     {
       "src": "/(.*)",
-      "dest": "public/$1"
+      "dest": "/src/$1"
     },
     {
       "src": "/[^.]+",
