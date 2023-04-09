@@ -1,29 +1,12 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
-  ],
-  "build": {
-    "env": {
-      "PATH": "/usr/local/bin:$PATH"
-    },
-    "command": "npm run build"
-  },
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/database/db.json"
+      "dest": "http://localhost:3000/$1"
     },
     {
-      "src": "/[^.]+",
-      "dest": "/",
-      "status": 200
+      "src": "/(.*)",
+      "dest": "/$1"
     }
   ]
 }
