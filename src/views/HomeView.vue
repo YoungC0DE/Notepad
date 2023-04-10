@@ -8,7 +8,7 @@
   <LogoutButton />
 </template>
 
-<script>
+<script lang="js">
 import HeaderComponent from '@/components/HeaderComponent.vue'
 import LogoutButton from '@/components/LogoutButton.vue'
 import TableComponent from '@/components/TableComponent.vue'

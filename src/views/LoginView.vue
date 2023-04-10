@@ -39,23 +39,16 @@ export default {
             if (!this.Validate()) {
                 return false
             }
-            axios.get(import.meta.env.VITE_URL_API + `/users?email=${this.email.toLowerCase()}&password=${btoa(this.password)}`)
-                .then(({ data }) => {
-                    if (data.length > 0) {
-                        this.$toast.success(`Welcome Sr(a). ${data[0].name}`, {
-                            position: "top-right"
-                        })
-                        this.$router.push({ name: 'Home' })
-                        return
-                    }
-                    this.$toast.error('Password incorrect', {
-                        position: "top-right"
-                    })
-                }).catch(() => {
-                    this.$toast.error('Error on login', {
-                        position: "top-right"
-                    })
-                })
+            this.$router.push({ name: 'Home' })
+            return
+            this.$toast.success(`Welcome Sr(a). ${data[0].name}`, {
+                position: "top-right"
+            })
+            this.$router.push({ name: 'Home' })
+
+            this.$toast.error('Password incorrect', {
+                position: "top-right"
+            })
         }
     }
 }

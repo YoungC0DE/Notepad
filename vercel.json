@@ -1,14 +1,9 @@
 {
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "https://task-list-w2cn.vercel.app/api/$1",
-      "status": 200
-    },
-    {
-      "src": "/[^.]+",
-      "dest": "/",
-      "status": 200
-    }
+      {
+          "src": "/[^.]+",
+          "dest": "/",
+          "status": 200
+      }
   ]
 }

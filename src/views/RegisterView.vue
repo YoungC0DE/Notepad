@@ -55,33 +55,15 @@ export default {
             if (!this.Validate()) {
                 return false
             }
-            axios.get(import.meta.env.VITE_URL_API + `/users?email=${this.email.toLowerCase()}`)
-                .then(({ data }) => {
-                    if (data.length > 0) {
-                        this.$toast.error('This e-mail already is used', {
-                            position: "top-right"
-                        })
-                        return
-                    }
-                    axios.post(import.meta.env.VITE_URL_API + '/users', {
-                        name: this.name,
-                        email: this.email.toLowerCase(),
-                        password: btoa(this.password)
-                    })
-                        .then((resp) => {
-                            if (resp.status == 201) {
-                                this.$toast.success('Account created with success', {
-                                    position: "top-right"
-                                })
-                                this.$router.push({ name: 'Login' })
-                                return
-                            }
-                        }).catch(() => {
-                            this.$toast.error('Error on login', {
-                                position: "top-right"
-                            })
-                        })
-                });
+            return
+            this.$toast.error('This e-mail already is used', {
+                position: "top-right"
+            })
+            this.$toast.success('Account created with success', {
+                position: "top-right"
+            })
+            this.$router.push({ name: 'Login' })
+            return
         }
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "tasklist",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -15,10 +15,11 @@
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.4",
     "concurrently": "^6.2.1",
-    "cors": "^2.8.5",
+    "firebase": "^9.19.1",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
-    "vue-toast-notification": "3.0"
+    "vue-toast-notification": "3.0",
+    "vuefire": "^3.1.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.2.0",
