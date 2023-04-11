@@ -23,9 +23,10 @@
 </template>
 
 <script lang="js">
-import axios from "axios";
+import { collection, query, where, getDocs, addDoc, orderBy, limit } from "firebase/firestore";
 
 export default {
+    inject: ['db'],
     data() {
         return {
             name: '',
@@ -51,15 +52,42 @@ export default {
 
             return true
         },
-        Register() {
+        async Register() {
             if (!this.Validate()) {
                 return false
             }
-            return
-            this.$toast.error('This e-mail already is used', {
-                position: "top-right"
-            })
-            this.$toast.success('Account created with success', {
+
+            const tableUsers = collection(this.db, "users");
+
+            const dataUsers = query(tableUsers, where("email", "==", this.email));
+            const querySnapshot = await getDocs(dataUsers);
+
+            if (!querySnapshot.empty) {
+                this.$toast.error('This e-mail already is used', {
+                    position: "top-right"
+                })
+                return
+            }
+
+            // Recover the last ID used in collection 'users'
+            const lastUser = await getDocs(query(tableUsers, orderBy("ID", "desc"), limit(1)));
+            let lastID = 0;
+            if (!lastUser.empty) {
+                const lastData = lastUser.docs[0].data();
+                lastID = lastData.ID;
+            }
+
+            // Increment the last id and add a new user
+            const newID = lastID + 1;
+            const newUser = {
+                name: this.name,
+                email: this.email.toLowerCase(),
+                password: btoa(this.password),
+                ID: newID
+            };
+            await addDoc(tableUsers, newUser);
+
+            this.$toast.success('Account created successfully, proceed with login!', {
                 position: "top-right"
             })
             this.$router.push({ name: 'Login' })

@@ -16,9 +16,7 @@
 </template>
 
 <script lang="js">
-import { useCollection } from 'vuefire'
-import { collection } from 'firebase/firestore'
-import { doc, getDoc } from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
 
 export default {
     inject: ['db'],
@@ -42,24 +40,33 @@ export default {
             if (!this.Validate()) {
                 return false
             }
-            const docRef = doc(this.db, "users", "1");
-            const docSnap = await getDoc(docRef);
-            if (docSnap.exists()) {
-                console.log("Document data:", docSnap.data());
-                return
-            } else {
-                // doc.data() will be undefined in this case
-                console.log("No such document!");
+
+            const tableUsers = collection(this.db, "users");
+            const dataUsers = query(tableUsers, where("email", "==", this.email), where("password", "==", btoa(this.password)));
+            const querySnapshot = await getDocs(dataUsers);
+
+            if (querySnapshot.empty) {
+                this.$toast.error('Login incorrect', {
+                    position: "top-right"
+                })
                 return
             }
-            this.$toast.success(`Welcome Sr(a). ${data[0].name}`, {
-                position: "top-right"
-            })
-            this.$router.push({ name: 'Home' })
 
-            this.$toast.error('Password incorrect', {
+            const doc = querySnapshot.docs[0];
+
+            const data = {
+                name: doc.data().name,
+                email: doc.data().email,
+                id: doc.data().ID
+            }
+
+            sessionStorage.setItem(btoa('userdata'), btoa(JSON.stringify(data)));
+
+            this.$toast.success(`Welcome Sr(a). ${data.name}`, {
                 position: "top-right"
             })
+
+            this.$router.push({ name: 'Home' })
         }
     }
 }
