@@ -5,10 +5,6 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/login'
-    },
-    {
-      path: '/login',
       name: 'Login',
       component: () => import('@/views/LoginView.vue')
     },
@@ -20,9 +16,19 @@ const router = createRouter({
     {
       path: '/home',
       name: 'Home',
+      meta: { requiresAuth: true },
       component: () => import('@/views/HomeView.vue')
     }
   ]
 })
 
-export default router;
+router.beforeEach((to, from, next) => {
+  const token = sessionStorage.getItem(btoa('userdata'))
+  if (to.matched.some((record) => record.meta.requiresAuth) && !token) {
+    next({ name: 'Login' })
+  } else {
+    next()
+  }
+})
+
+export default router

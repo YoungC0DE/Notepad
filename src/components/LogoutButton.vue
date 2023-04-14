@@ -9,6 +9,8 @@ export default {
     methods: {
         Logout() {
             this.$router.push({ name: 'Login' })
+            window.localStorage.clear()
+            sessionStorage.clear()
         }
     }
 }

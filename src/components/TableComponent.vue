@@ -1,25 +1,34 @@
 <template>
+    <DetailsModal />
     <div class="table-list" v-on:scroll="onScroll">
         <table class="table text-white m-0">
             <thead>
                 <tr>
-                    <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">
-                        <input class="form-check-input" name="teste" type="checkbox" v-model="checkboxModel">
-                    </th>
+                    <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">#</th>
                     <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">Title</th>
                     <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">Priority</th>
-                    <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">Date</th>
+                    <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">Created At</th>
                     <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in itemsCollection" :key="index">
-                    <td>
-                        <input class="form-check-input shadow-none" name="selectLine" type="checkbox">
+                <tr v-show="itemsCollection.length == 0 && emptyList == false">
+                    <td colspan="5" rowspan="5">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
                     </td>
+                </tr>
+                <tr v-show="itemsCollection.length == 0 && emptyList == true">
+                    <td colspan="5" rowspan="5">
+                        You have no tasks yet... ⛳
+                    </td>
+                </tr>
+                <tr v-for="(item, index) in itemsCollection" :key="index">
+                    <td>{{ item.ID }}</td>
                     <td>{{ item.title }}</td>
                     <td>
-                        <span class="badge rounded-pill text-bg-secondary"> {{ item.priority }} </span>
+                        <span class="badge rounded-pill" :class="'text-' + getPriority(item.priority).color"> {{ getPriority(item.priority).label }} </span>
                     </td>
                     <td>{{ convertDate(item).date }}</td>
                     <td>
@@ -34,15 +43,17 @@
 </template>
 
 <script>
-import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
+import { collection, query, where, getDocs, orderBy } from "firebase/firestore"
+import DetailsModal from "@/components/Modals/DetailsModal.vue"
 
 export default {
     inject: ['db'],
+    components: { DetailsModal },
     data() {
         return {
             sticky: false,
-            checkboxModel: false,
-            itemsCollection: []
+            itemsCollection: [],
+            emptyList: false
         }
     },
     methods: {
@@ -53,33 +64,47 @@ export default {
             }
             this.sticky = false;
         },
+        getPriority(id) {
+            if (id == 1) {
+                return {
+                    label: 'Not important',
+                    color: 'bg-secondary'
+                }
+            }
+            if (id == 2) {
+                return {
+                    label: 'Important',
+                    color: 'bg-warning'
+                }
+            }
+            if (id == 3) {
+                return {
+                    label: 'Urgent',
+                    color: 'bg-danger'
+                }
+            }
+        },
         convertDate(data) {
-            let nanoseconds = data.created_at.nanoseconds
-            let seconds = data.created_at.seconds
+            let nanoseconds = data.created_at.nanoseconds,
+                seconds = data.created_at.seconds;
 
-            let datetime = new Date(seconds * 1000 + nanoseconds / 1000000)
+            let datetime = new Date(seconds * 1000 + nanoseconds / 1000000);
 
-            let day = datetime.getDate().toString().padStart(2, '0')
-            let month = (datetime.getMonth() + 1).toString().padStart(2, '0')
-            let year = datetime.getFullYear().toString().padStart(2, '0')
+            let day = datetime.getDate().toString().padStart(2, '0'),
+                month = (datetime.getMonth() + 1).toString().padStart(2, '0'),
+                year = datetime.getFullYear().toString().padStart(2, '0');
 
-            let hour = datetime.getHours().toString().padStart(2, '0')
-            let minute = datetime.getMinutes().toString().padStart(2, '0')
-            let second = datetime.getSeconds().toString().padStart(2, '0')
+            let hour = datetime.getHours().toString().padStart(2, '0'),
+                minute = datetime.getMinutes().toString().padStart(2, '0'),
+                second = datetime.getSeconds().toString().padStart(2, '0');
 
-            let time = `${hour}:${minute}:${second}`;
-            let date = `${day}/${month}/${year}`;
+            let time = `${hour}:${minute}:${second}`,
+                date = `${day}/${month}/${year}`;
 
             return {
                 date,
                 time
             }
-        },
-        toggleCheckboxes() {
-            var checkboxes = document.querySelectorAll('.table-list table tbody tr td input[type="checkbox"]')
-            checkboxes.forEach((checkbox) => {
-                checkbox.checked = this.checkboxModel
-            })
         },
         loadItems() {
             const userdata = JSON.parse(atob(sessionStorage.getItem(btoa('userdata'))))
@@ -88,18 +113,17 @@ export default {
             const dataItems = query(tableItems, where("fk_user", "==", userdata.id), orderBy('created_at', 'desc'));
 
             getDocs(dataItems).then(resp => {
+                if (resp.docs.length == 0) {
+                    this.emptyList = true
+                    return
+                }
+
                 resp.forEach((doc) => {
-                    console.log(this.convertDate(doc.data()).time)
                     this.itemsCollection.push(doc.data())
                 })
             }).catch((err) => {
                 console.log(err)
             })
-        }
-    },
-    watch: {
-        checkboxModel(vNew, vOld) {
-            this.toggleCheckboxes()
         }
     },
     mounted() {

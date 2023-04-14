@@ -9,8 +9,12 @@
             <input type="password" class="form-control" id="password" placeholder="-" v-model="password">
             <label for="password" class="text-white">Password</label>
         </div>
-
-        <button type="button" class="btn btn-primary mt-4" v-on:click="Login()">Login</button>
+        <button type="button" class="btn btn-secondary mt-4" disabled v-if="awaitLogin">
+            <div class="spinner-border" style="width: 2rem; height: 2rem; border-width: 2px;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </button>
+        <button type="button" class="btn btn-primary mt-4" v-on:click="Login()" v-else>Login</button>
         <RouterLink to="/register" class="btn btn-secondary">Create account</RouterLink>
     </div>
 </template>
@@ -24,6 +28,7 @@ export default {
         return {
             email: '',
             password: '',
+            awaitLogin: false
         }
     },
     methods: {
@@ -41,6 +46,8 @@ export default {
                 return false
             }
 
+            this.awaitLogin = true;
+
             const tableUsers = collection(this.db, "users");
             const dataUsers = query(tableUsers, where("email", "==", this.email), where("password", "==", btoa(this.password)));
             const querySnapshot = await getDocs(dataUsers);
@@ -49,6 +56,7 @@ export default {
                 this.$toast.error('Login incorrect', {
                     position: "top-right"
                 })
+                this.awaitLogin = false;
                 return
             }
 
