@@ -1,5 +1,5 @@
 <template>
-    <DetailsModal />
+    <DetailsModal :values="forModal" />
     <div class="table-list" v-on:scroll="onScroll">
         <table class="table text-white m-0">
             <thead>
@@ -30,9 +30,9 @@
                     <td>
                         <span class="badge rounded-pill" :class="'text-' + getPriority(item.priority).color"> {{ getPriority(item.priority).label }} </span>
                     </td>
-                    <td>{{ convertDate(item).date }}</td>
+                    <td>{{ convertDate(item.created_at) }}</td>
                     <td>
-                        <button type="button" class="btn btn-dark shadow-none" data-bs-toggle="modal" data-bs-target="#DetailsModal">
+                        <button type="button" class="btn btn-dark shadow-none" data-bs-toggle="modal" data-bs-target="#DetailsModal" @click="forModal = item">
                             <i class="bi bi-eye"></i>
                         </button>
                     </td>
@@ -53,7 +53,8 @@ export default {
         return {
             sticky: false,
             itemsCollection: [],
-            emptyList: false
+            emptyList: false,
+            forModal: {}
         }
     },
     methods: {
@@ -85,26 +86,8 @@ export default {
             }
         },
         convertDate(data) {
-            let nanoseconds = data.created_at.nanoseconds,
-                seconds = data.created_at.seconds;
-
-            let datetime = new Date(seconds * 1000 + nanoseconds / 1000000);
-
-            let day = datetime.getDate().toString().padStart(2, '0'),
-                month = (datetime.getMonth() + 1).toString().padStart(2, '0'),
-                year = datetime.getFullYear().toString().padStart(2, '0');
-
-            let hour = datetime.getHours().toString().padStart(2, '0'),
-                minute = datetime.getMinutes().toString().padStart(2, '0'),
-                second = datetime.getSeconds().toString().padStart(2, '0');
-
-            let time = `${hour}:${minute}:${second}`,
-                date = `${day}/${month}/${year}`;
-
-            return {
-                date,
-                time
-            }
+            const datetime = new Date(data);
+            return datetime.toLocaleDateString() + " " + datetime.toLocaleTimeString();
         },
         loadItems() {
             const userdata = JSON.parse(atob(sessionStorage.getItem(btoa('userdata'))))

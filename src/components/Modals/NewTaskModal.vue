@@ -8,18 +8,18 @@
                 </div>
                 <div class="modal-body text-start">
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Title</label>
-                        <input type="email" class="form-control" id="exampleFormControlInput1" v-model="title" placeholder="name@example.com">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="email" class="form-control" id="title" v-model="title" placeholder="Task title">
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text">Date</span>
+                        <span class="input-group-text bg-dark text-white">Date</span>
                         <input type="date" class="form-control" v-model="date">
-                        <span class="input-group-text">Time</span>
+                        <span class="input-group-text bg-dark text-white">Time</span>
                         <input type="time" class="form-control" v-model="time">
                     </div>
                     <div class="mb-3">
-                        <label for="exampleFormControlInput1" class="form-label">Description</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="description"></textarea>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" id="description" rows="3" v-model="description" placeholder="Description of the task"></textarea>
                     </div>
                     <div class="col">
                         <p style="margin-bottom: 0.5rem !important;">Priority</p>
@@ -36,7 +36,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" v-on:click="addNewTask()">Save changes</button>
+                    <button type="button" class="btn btn-primary" v-if="awaitProccess">
+                        <div class="spinner-border" style="width: 2rem; height: 2rem; border-width: 2px;" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </button>
+                    <button type="button" class="btn btn-primary" v-else v-on:click="addNewTask()">Save changes</button>
                 </div>
             </div>
         </div>
@@ -54,16 +59,32 @@ export default {
             date: '',
             time: '',
             description: '',
-            priority: ''
+            priority: '',
+            awaitProccess: false
         }
     },
     methods: {
+        validate() {
+            if (this.title == '' || this.date == '' || this.time == '' || this.description == '' || this.priority == '') {
+                this.$toast.error('It is necessary to fill in all fields', {
+                    position: "top-right"
+                })
+                return false
+            }
+            return true
+        },
         async addNewTask() {
+            if (this.validate() == false) {
+                return
+            }
+
+            this.awaitProccess = true;
+
             const userData = JSON.parse(atob(sessionStorage.getItem(btoa('userdata'))))
             const tableItems = collection(this.db, "items");
 
             // Recover the last ID used in collection 'users'
-            const lastItem = await getDocs(query(tableItems, where('fk_user', "=", userData.id), orderBy("ID", "desc"), limit(1)));
+            const lastItem = await getDocs(query(tableItems, where('fk_user', "==", userData.id), orderBy("ID", "desc"), limit(1)));
 
             let lastID = 0
             if (!lastItem.empty) {
@@ -83,17 +104,24 @@ export default {
                 fk_user: userData.id,
                 priority: this.priority,
             };
-            await addDoc(tableItems, newItem);
 
-            this.title = '',
-            this.date = '',
-            this.time = '',
-            this.description = '',
-            this.priority = ''
+            addDoc(tableItems, newItem).then(() => {
+                this.title = '',
+                    this.date = '',
+                    this.time = '',
+                    this.description = '',
+                    this.priority = ''
 
-            this.$toast.success('Task registered successfully!', {
-                position: "top-right"
-            })
+                this.$toast.success('Task registered successfully!', {
+                    position: "top-right"
+                })
+            }).catch((err) => {
+                this.$toast.error(`Error to create the task: ${err}`, {
+                    position: "top-right"
+                })
+            });
+
+            this.awaitProccess = false;
         }
     }
 }

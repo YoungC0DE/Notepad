@@ -213,6 +213,31 @@ html {
 .modal-content {
   width: 600px;
   height: 600px;
+  background: #252a38;
+  color: white;
+  font-size: 14pt;
+}
+
+#DetailsModal .modal-body {
+  max-height: 500px;
+  overflow: auto;
+}
+
+#DetailsModal .modal-body div span {
+  max-width: 250px;
+  word-wrap: break-word;
+}
+
+#NewTaskModal input,
+#NewTaskModal textarea,
+#NewTaskModal select {
+  font-family: Varela Round, sans-serif;
+  background-color: #c2c4ff21 !important;
+  color: white !important;
+}
+
+#NewTaskModal select option {
+  color: black !important;
 }
 
 .main-container header nav .btn-search {
