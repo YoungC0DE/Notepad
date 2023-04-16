@@ -5,7 +5,7 @@
 
 This project was made using Vercel. To Access the project click in this button:
 
-[![TaskList](https://img.shields.io/badge/ShoppingList-Visit-9cf?style=for-the-badge&logo=vercel)](https://task-list-2.vercel.app/)
+[![TaskList](https://img.shields.io/badge/TaskList-Visit-9cf?style=for-the-badge&logo=vercel)](https://task-list-2.vercel.app/)
 
 ## Technologies
 
@@ -27,18 +27,26 @@ This project was made using Vercel. To Access the project click in this button:
 ## Environment Variables
 
 `VITE_BASE_API=`
+
 `VITE_PROJECT_ID=`
+
 `VITE_API_KEY=`
+
 `VITE_AUTH_DOMAIN=`
+
 `VITE_STORAGE_BUCKET=`
+
 `VITE_MESSAGING_SENDER_ID=`
+
 `VITE_APP_ID=`
 
 ## Screenshots
 
 <div style="display: flex">
-  <img src="https://user-images.githubusercontent.com/68437256/228402955-a13dcea4-5938-475b-bff7-a202337bf246.png"  width="500" height="250">
-  <img src="https://user-images.githubusercontent.com/68437256/228704190-c379c3aa-7353-409c-8880-163930b971c4.png"  width="500" height="250">
+  <img src="https://user-images.githubusercontent.com/68437256/232347274-0dfd1008-7473-469d-9e77-7f343f57e8af.png"  width="500" height="250">
+  <img src="https://user-images.githubusercontent.com/68437256/232347312-46ed020f-5b67-460e-952f-dfa30b17bc61.png"  width="500" height="250">
+  <img src="https://user-images.githubusercontent.com/68437256/232347356-7c4c2f82-ca85-47d3-84e9-6c84b27705c9.png"  width="500" height="250">
+  <img src="https://user-images.githubusercontent.com/68437256/232347401-d5ee5f08-21cf-4d4c-9497-4a3b5017a178.png"  width="500" height="250">
 <div>
 
 ## Run Locally
