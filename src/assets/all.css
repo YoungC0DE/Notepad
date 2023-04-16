@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Moonrocks&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=NTR&display=swap');
+
 * {
   padding: 0;
   margin: 0;
@@ -27,6 +30,8 @@ body {
 #app {
   height: 100%;
   width: 100%;
+  font-family: 'NTR', sans-serif;
+  font-size: 14pt;
 }
 
 html {
@@ -82,6 +87,10 @@ html {
   padding-bottom: 15px;
 }
 
+.main-title {
+  font-family: 'Rubik Moonrocks', cursive;
+}
+
 .main-container header,
 .table-list {
   min-width: 600px;
@@ -95,6 +104,16 @@ html {
 
 .table-list {
   z-index: 2;
+}
+
+i {
+  vertical-align: 0;
+  line-height: 0 !important;
+  display: flex;
+}
+
+.container-home button {
+  padding: 10px 15px !important;
 }
 
 .main-container .table-list table {
@@ -111,10 +130,154 @@ html {
   background-color: rgb(53 57 76);
 }
 
+.main-container .table-list .table > :not(caption) > * > * {
+  border: none !important;
+  vertical-align: middle;
+}
+
+.table-list table thead {
+  height: 50px;
+  border-bottom: 1px solid white;
+}
+
+.main-container header nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  padding: 4px 14px;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.main-container header nav input {
+  width: 100%;
+  font-family: Varela Round, sans-serif;
+  background-color: #c2c4ff21 !important;
+  color: white !important;
+}
+
+.container-login input,
+.container-register input {
+  color: white !important;
+  background-color: #c2c4ff21 !important;
+}
+
+.main-container header nav button {
+  padding: 5px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.modal {
+  width: 100%;
+  height: 100%;
+}
+
+.modal-title {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  text-transform: uppercase;
+  align-items: center;
+}
+
+.modal-dialog {
+  height: 100%;
+  padding: 0px;
+  margin: 0px !important;
+  display: flex;
+  max-width: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  width: 605px;
+  height: 605px;
+  background: #252a38;
+  color: white;
+  font-size: 14pt;
+}
+
+#DetailsModal .modal-body {
+  max-height: 500px;
+  overflow: auto;
+}
+
+#DetailsModal .modal-body div span {
+  max-width: 500px;
+  word-wrap: break-word;
+  background: #3a3f4e;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+#NewTaskModal input,
+#NewTaskModal textarea,
+#NewTaskModal select {
+  font-family: Varela Round, sans-serif;
+  background-color: #c2c4ff21 !important;
+  color: white !important;
+}
+
+#NewTaskModal select option {
+  color: black !important;
+}
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+.modal-body {
+  scrollbar-width: auto;
+  scrollbar-color: #3a3f4e white;
+}
+
+/* Chrome, Edge, and Safari */
+.modal-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background-color: #3a3f4e;
+  border-radius: 8px;
+  border: 3px solid transparent;
+}
+
+.main-container header nav .btn-search {
+  border: 1px solid rgb(18, 180, 132) !important;
+  color: rgb(18, 180, 132) !important;
+}
+
+.main-container header nav .btn-search:hover {
+  color: rgb(255, 255, 255) !important;
+  background-color: rgb(18, 180, 132);
+}
+
+.main-container header nav .btn-add {
+  border: 1px solid rgb(40, 133, 255) !important;
+  color: rgb(40, 133, 255) !important;
+}
+
+.main-container header nav .btn-add:hover {
+  background-color: rgb(40, 133, 255);
+  color: rgb(255, 255, 255) !important;
+}
+
 @media (max-width: 600px) {
   .main-container header,
   .table-list {
     min-width: 0px;
+  }
+
+  #DetailsModal .modal-body div span {
+    max-width: 250px;
   }
 
   .main-container header nav {
@@ -154,116 +317,16 @@ html {
   }
 }
 
-.main-container .table-list .table > :not(caption) > * > * {
-  border: none !important;
-  vertical-align: middle;
-}
-
-.table-list table thead {
-  height: 50px;
-  border-bottom: 1px solid white;
-}
-
-.main-container header nav {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  gap: 10px;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-}
-
-.main-container header nav input {
-  width: 100%;
-  font-family: Varela Round, sans-serif;
-  background-color: #c2c4ff21 !important;
-  color: white !important;
-}
-
-.container-login input,
-.container-register input {
-  color: white !important;
-  background-color: #c2c4ff21 !important;
-}
-
-.main-container header nav button {
-  padding: 5px 20px;
-  cursor: pointer;
-  border-radius: 4px;
-  background-color: transparent;
-}
-
-.modal {
-  width: 100%;
-  height: 100%;
-}
-
-.modal-dialog {
-  height: 100%;
-  padding: 0px;
-  margin: 0px !important;
-  display: flex;
-  max-width: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  width: 600px;
-  height: 600px;
-  background: #252a38;
-  color: white;
-  font-size: 14pt;
-}
-
-#DetailsModal .modal-body {
-  max-height: 500px;
-  overflow: auto;
-}
-
-#DetailsModal .modal-body div span {
-  max-width: 250px;
-  word-wrap: break-word;
-}
-
-#NewTaskModal input,
-#NewTaskModal textarea,
-#NewTaskModal select {
-  font-family: Varela Round, sans-serif;
-  background-color: #c2c4ff21 !important;
-  color: white !important;
-}
-
-#NewTaskModal select option {
-  color: black !important;
-}
-
-.main-container header nav .btn-search {
-  border: 1px solid rgb(18, 180, 132) !important;
-  color: rgb(18, 180, 132) !important;
-}
-
-.main-container header nav .btn-search:hover {
-  color: rgb(255, 255, 255) !important;
-  background-color: rgb(18, 180, 132);
-}
-
-.main-container header nav .btn-add {
-  border: 1px solid rgb(40, 133, 255) !important;
-  color: rgb(40, 133, 255) !important;
-}
-
-.main-container header nav .btn-add:hover {
-  background-color: rgb(40, 133, 255);
-  color: rgb(255, 255, 255) !important;
-}
-
 .btn-loggout {
   position: fixed;
   bottom: 0px;
   left: 0px;
+  height: 45px;
+  width: 45px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .circles {

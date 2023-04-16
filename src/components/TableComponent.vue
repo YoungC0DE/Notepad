@@ -1,10 +1,11 @@
 <template>
     <DetailsModal :values="forModal" />
+    <HeaderComponent @search-by-name="searchByName" />
     <div class="table-list" v-on:scroll="onScroll">
         <table class="table text-white m-0">
             <thead>
                 <tr>
-                    <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">#</th>
+                    <th scope="col" class="fw-bold" :class="sticky == true ? 'sticky-scroll' : ''">#</th>
                     <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">Title</th>
                     <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">Priority</th>
                     <th scope="col" :class="sticky == true ? 'sticky-scroll' : ''">Created At</th>
@@ -25,7 +26,7 @@
                     </td>
                 </tr>
                 <tr v-for="(item, index) in itemsCollection" :key="index">
-                    <td>{{ index + 1 }}</td>
+                    <td class="fw-bold">{{ index + 1 }}</td>
                     <td>{{ item.title }}</td>
                     <td>
                         <span class="badge rounded-pill" :class="'text-' + getPriority(item.priority).color"> {{ getPriority(item.priority).label }} </span>
@@ -43,12 +44,13 @@
 </template>
 
 <script>
-import { collection, query, where, getDocs, orderBy } from "firebase/firestore"
+import { collection, query, where, getDocs, orderBy, and } from "firebase/firestore"
 import DetailsModal from "@/components/Modals/DetailsModal.vue"
+import HeaderComponent from '@/components/HeaderComponent.vue'
 
 export default {
     inject: ['db'],
-    components: { DetailsModal },
+    components: { DetailsModal, HeaderComponent },
     data() {
         return {
             sticky: false,
@@ -89,9 +91,32 @@ export default {
             const datetime = new Date(data);
             return datetime.toLocaleDateString() + " " + datetime.toLocaleTimeString();
         },
+        searchByName(search) {
+            const userdata = JSON.parse(atob(sessionStorage.getItem(btoa('userdata'))))
+            const tableItems = collection(this.db, "items");
+
+            const matchValue = (search.toLowerCase()).split(' ')
+            const dataItems = query(tableItems, where("fk_user", "==", userdata.id), where("title", "==", search), orderBy('created_at', 'desc'));
+
+            getDocs(dataItems).then(resp => {
+                console.log(resp)
+                if (resp.docs.length == 0) {
+                    this.emptyList = true
+                    return
+                }
+                this.itemsCollection = []
+
+                resp.forEach((doc) => {
+                    var info = doc.data()
+                    info.collection = doc.id
+                    this.itemsCollection.push(info)
+                })
+            }).catch((err) => {
+                console.log(err)
+            })
+        },
         loadItems() {
             const userdata = JSON.parse(atob(sessionStorage.getItem(btoa('userdata'))))
-
             const tableItems = collection(this.db, "items");
             const dataItems = query(tableItems, where("fk_user", "==", userdata.id), orderBy('created_at', 'desc'));
 

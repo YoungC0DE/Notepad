@@ -8,21 +8,22 @@
                 </div>
                 <div class="modal-body text-start">
                     <div class="mb-3">
-                        <label for="title" class="form-label">Title</label>
+                        <label for="title" class="form-label">Title *</label>
                         <input type="email" class="form-control" id="title" v-model="title" placeholder="Task title">
                     </div>
+                    <label for="title" class="form-label">Date and Time (optional)</label>
                     <div class="input-group mb-3">
-                        <input id="dateTask" name="dateTask" type="date" class="form-control" v-model="date">
+                        <input id="dateTask" min="2000-01-01" max="2050-12-31" name="dateTask" type="date" class="form-control" v-model="date">
                         <span for="dateTask" class="input-group-text bg-dark text-white">Date</span>
-                        <input id="timeTask" name="timeTask" type="time" class="form-control" v-model="time">
+                        <input id="timeTask" min="00:00" max="23:59" name="timeTask" type="time" class="form-control" v-model="time">
                         <span for="timeTask" class="input-group-text bg-dark text-white">Time</span>
                     </div>
                     <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
+                        <label for="description" class="form-label">Description (optional)</label>
                         <textarea class="form-control" id="description" rows="3" v-model="description" placeholder="Description of the task"></textarea>
                     </div>
                     <div class="col">
-                        <p style="margin-bottom: 0.5rem !important;">Priority</p>
+                        <p style="margin-bottom: 0.5rem !important;">Priority *</p>
                         <div class="input-group mb-3">
                             <select id="priority" class="form-select" aria-label="Default select example" v-model="priority">
                                 <option value="" selected disabled hidden>Select the Priority</option>
@@ -56,17 +57,17 @@ export default {
     data() {
         return {
             title: '',
-            date: '',
-            time: '',
-            description: '',
+            date: null,
+            time: null,
+            description: null,
             priority: '',
             awaitProccess: false
         }
     },
     methods: {
         validate() {
-            if (this.title == '' || this.date == '' || this.time == '' || this.description == '' || this.priority == '') {
-                this.$toast.error('It is necessary to fill in all fields', {
+            if (this.title == '' || this.priority == '') {
+                this.$toast.error('It is necessary to fill in all fields with (*)', {
                     position: "top-right"
                 })
                 return false
@@ -98,9 +99,9 @@ export default {
                 ID: newID,
                 created_at: Date(),
                 date: this.date,
-                time: this.time,
-                title: this.title,
-                description: this.description,
+                time: this.time || '-',
+                title: this.title || '-',
+                description: this.description || '-',
                 fk_user: userData.id,
                 priority: this.priority,
             };
