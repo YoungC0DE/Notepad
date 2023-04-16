@@ -25,7 +25,7 @@
                     </td>
                 </tr>
                 <tr v-for="(item, index) in itemsCollection" :key="index">
-                    <td>{{ item.ID }}</td>
+                    <td>{{ index + 1 }}</td>
                     <td>{{ item.title }}</td>
                     <td>
                         <span class="badge rounded-pill" :class="'text-' + getPriority(item.priority).color"> {{ getPriority(item.priority).label }} </span>
@@ -102,7 +102,10 @@ export default {
                 }
 
                 resp.forEach((doc) => {
-                    this.itemsCollection.push(doc.data())
+                    var info = doc.data()
+                    info.collection = doc.id
+
+                    this.itemsCollection.push(info)
                 })
             }).catch((err) => {
                 console.log(err)

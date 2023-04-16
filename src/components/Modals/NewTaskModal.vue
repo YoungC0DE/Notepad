@@ -12,10 +12,10 @@
                         <input type="email" class="form-control" id="title" v-model="title" placeholder="Task title">
                     </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text bg-dark text-white">Date</span>
-                        <input type="date" class="form-control" v-model="date">
-                        <span class="input-group-text bg-dark text-white">Time</span>
-                        <input type="time" class="form-control" v-model="time">
+                        <input id="dateTask" name="dateTask" type="date" class="form-control" v-model="date">
+                        <span for="dateTask" class="input-group-text bg-dark text-white">Date</span>
+                        <input id="timeTask" name="timeTask" type="time" class="form-control" v-model="time">
+                        <span for="timeTask" class="input-group-text bg-dark text-white">Time</span>
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
@@ -41,7 +41,7 @@
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </button>
-                    <button type="button" class="btn btn-primary" v-else v-on:click="addNewTask()">Save changes</button>
+                    <button type="button" class="btn btn-primary" @click="addNewTask()" data-bs-dismiss="modal" v-else>Save changes</button>
                 </div>
             </div>
         </div>
@@ -106,15 +106,11 @@ export default {
             };
 
             addDoc(tableItems, newItem).then(() => {
-                this.title = '',
-                    this.date = '',
-                    this.time = '',
-                    this.description = '',
-                    this.priority = ''
+                window.location.reload()
 
-                this.$toast.success('Task registered successfully!', {
-                    position: "top-right"
-                })
+                // this.$toast.success('Task registered successfully!', {
+                //     position: "top-right"
+                // })
             }).catch((err) => {
                 this.$toast.error(`Error to create the task: ${err}`, {
                     position: "top-right"

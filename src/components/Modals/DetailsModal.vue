@@ -25,8 +25,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteItem()">Delete Item</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -34,21 +34,29 @@
 </template>
 
 <script>
+import { doc, deleteDoc } from "firebase/firestore";
+
 export default {
+    inject: ['db'],
     props: { values: Object },
-    data() {
-        return {
-            title: '',
-            date: '',
-            time: '',
-            description: '',
-            priority: 1
-        }
-    },
     methods: {
         convertDate(data) {
             const datetime = new Date(data);
             return datetime.toLocaleDateString() + " " + datetime.toLocaleTimeString();
+        },
+        deleteItem() {
+            deleteDoc(doc(this.db, "items", this.values.collection))
+                .then(() => {
+                    window.location.reload()
+                    // this.$toast.success('Task deleted!', {
+                    //     position: "top-right"
+                    // })
+                })
+                .catch(() => {
+                    this.$toast.success('Error to delete task.', {
+                        position: "top-right"
+                    })
+                })
         },
         getPriority(id) {
             if (!id) {
