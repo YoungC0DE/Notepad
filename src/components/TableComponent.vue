@@ -1,6 +1,6 @@
 <template>
     <DetailsModal :values="forModal" />
-    <HeaderComponent @search-by-name="searchByName" />
+    <HeaderComponent @search-by-name="searchByName" :await="awaitProccess" />
     <div class="table-list" v-on:scroll="onScroll">
         <table class="table text-white m-0">
             <thead>
@@ -56,7 +56,8 @@ export default {
             sticky: false,
             itemsCollection: [],
             emptyList: false,
-            forModal: {}
+            forModal: {},
+            awaitProccess: false
         }
     },
     methods: {
@@ -92,6 +93,7 @@ export default {
             return datetime.toLocaleDateString() + " " + datetime.toLocaleTimeString();
         },
         searchByName(search) {
+            this.awaitProccess = true
             const userdata = JSON.parse(atob(sessionStorage.getItem(btoa('userdata'))))
             const tableItems = collection(this.db, "items");
 
@@ -111,6 +113,7 @@ export default {
                     info.collection = doc.id
                     this.itemsCollection.push(info)
                 })
+                this.awaitProccess = false
             }).catch((err) => {
                 console.log(err)
             })

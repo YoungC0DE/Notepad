@@ -36,13 +36,11 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" v-if="awaitProccess">
-                        <div class="spinner-border" style="width: 2rem; height: 2rem; border-width: 2px;" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" :disabled="awaitProccess">Close</button>
+                    <button type="button" class="btn btn-secondary" disabled v-if="awaitProccess">
+                        Loading...
                     </button>
-                    <button type="button" class="btn btn-primary" @click="addNewTask()" data-bs-dismiss="modal" v-else>Save changes</button>
+                    <button type="button" class="btn btn-primary" @click="addNewTask()" v-else>Save changes</button>
                 </div>
             </div>
         </div>
@@ -98,9 +96,9 @@ export default {
             const newItem = {
                 ID: newID,
                 created_at: Date(),
-                date: this.date,
+                date: this.date || '-',
                 time: this.time || '-',
-                title: this.title || '-',
+                title: this.title,
                 description: this.description || '-',
                 fk_user: userData.id,
                 priority: this.priority,
@@ -117,8 +115,6 @@ export default {
                     position: "top-right"
                 })
             });
-
-            this.awaitProccess = false;
         }
     }
 }

@@ -25,7 +25,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal" @click="deleteItem()">Delete Item</button>
+                    <button type="button" class="btn btn-secondary" style="padding: 1px 15px !important;" disabled v-if="await">
+                        <div class="spinner-border" style="width: 2rem; height: 2rem; border-width: 2px;" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </button>
+                    <button type="button" class="btn btn-danger" @click="deleteItem()" v-else>Delete Item</button>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -39,12 +44,18 @@ import { doc, deleteDoc } from "firebase/firestore";
 export default {
     inject: ['db'],
     props: { values: Object },
+    data() {
+        return {
+            await: false
+        }
+    },
     methods: {
         convertDate(data) {
             const datetime = new Date(data);
             return datetime.toLocaleDateString() + " " + datetime.toLocaleTimeString();
         },
         deleteItem() {
+            this.await = true
             deleteDoc(doc(this.db, "items", this.values.collection))
                 .then(() => {
                     window.location.reload()

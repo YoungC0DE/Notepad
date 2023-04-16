@@ -19,7 +19,7 @@
     </div>
 </template>
 
-<script lang="js">
+<script>
 import { collection, query, where, getDocs } from "firebase/firestore";
 
 export default {
@@ -49,7 +49,7 @@ export default {
             this.awaitLogin = true;
 
             const tableUsers = collection(this.db, "users");
-            const dataUsers = query(tableUsers, where("email", "==", this.email), where("password", "==", btoa(this.password)));
+            const dataUsers = query(tableUsers, where("email", "==", this.email.toLowerCase()), where("password", "==", btoa(this.password)));
             const querySnapshot = await getDocs(dataUsers);
 
             if (querySnapshot.empty) {
@@ -64,7 +64,7 @@ export default {
 
             const data = {
                 name: doc.data().name,
-                email: doc.data().email,
+                email: doc.data().email.toLowerCase(),
                 id: doc.data().ID
             }
 

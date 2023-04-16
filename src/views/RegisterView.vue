@@ -59,7 +59,7 @@ export default {
 
             const tableUsers = collection(this.db, "users");
 
-            const dataUsers = query(tableUsers, where("email", "==", this.email));
+            const dataUsers = query(tableUsers, where("email", "==", this.email.toLowerCase()));
             const querySnapshot = await getDocs(dataUsers);
 
             if (!querySnapshot.empty) {
