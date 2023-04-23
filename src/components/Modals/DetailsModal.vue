@@ -16,8 +16,17 @@
                     <div class="d-flex flex-column">
                         <b>Time</b> <span>{{ values.time }}</span>
                     </div>
-                    <div class="d-flex flex-column">
-                        <b>Description</b> <span>{{ values.description }}</span>
+                    <div class="d-flex flex-column w-100">
+                        <b>Description</b>
+                        <Editor :api-key="tiny_key" v-model="values.description" disabled :init="{
+                                toolbar: 'code',
+                                readonly: true,
+                                disabled: true,
+                                statusbar: false,
+                                menubar: false,
+                                skin: 'oxide-dark',
+                                content_css: 'dark'
+                            }" />
                     </div>
                     <div class="d-flex flex-column">
                         <b>Priority</b>
@@ -39,14 +48,17 @@
 </template>
 
 <script>
+import Editor from '@tinymce/tinymce-vue'
 import { doc, deleteDoc } from "firebase/firestore";
 
 export default {
     inject: ['db'],
     props: { values: Object },
+    components: { Editor },
     data() {
         return {
-            await: false
+            await: false,
+            tiny_key: import.meta.env.VITE_TINYMCE_API_KEY
         }
     },
     methods: {

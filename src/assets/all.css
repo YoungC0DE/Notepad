@@ -231,6 +231,7 @@ i {
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
 .modal-body {
+  overflow: auto;
   scrollbar-width: auto;
   scrollbar-color: #3a3f4e white;
 }
