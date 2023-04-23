@@ -40,6 +40,8 @@ This project was made using Vercel. To Access the project click in this button:
 
 `VITE_APP_ID=`
 
+`VITE_TINYMCE_API_KEY=`
+
 ## Screenshots
 
 <div style="display: flex">
