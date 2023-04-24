@@ -17,7 +17,12 @@
             <input type="password" class="form-control" id="confirm_password" v-model="confirm_password" placeholder="-" required>
             <label for="confirm_password" class="text-white">Confirm your Password</label>
         </div>
-        <button type="button" class="btn btn-primary mt-4" v-on:click="Register">Register</button>
+        <button type="button" class="btn btn-secondary mt-4" disabled v-if="awaitRegister">
+            <div class="spinner-border" style="width: 2rem; height: 2rem; border-width: 2px;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </button>
+        <button v-else type="button" class="btn btn-primary mt-4" v-on:click="Register">Register</button>
         <RouterLink to="/" class="btn btn-secondary">Login</RouterLink>
     </div>
 </template>
@@ -32,7 +37,8 @@ export default {
             name: '',
             email: '',
             password: '',
-            confirm_password: ''
+            confirm_password: '',
+            awaitRegister: false
         }
     },
     methods: {
@@ -56,6 +62,8 @@ export default {
             if (!this.Validate()) {
                 return false
             }
+            
+            this.awaitRegister = true
 
             const tableUsers = collection(this.db, "users");
 
@@ -63,6 +71,7 @@ export default {
             const querySnapshot = await getDocs(dataUsers);
 
             if (!querySnapshot.empty) {
+                this.awaitRegister = false
                 this.$toast.error('This e-mail already is used', {
                     position: "top-right"
                 })
