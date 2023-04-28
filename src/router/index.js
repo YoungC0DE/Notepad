@@ -18,12 +18,17 @@ const router = createRouter({
       name: 'Home',
       meta: { requiresAuth: true },
       component: () => import('@/views/HomeView.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'Not Found',
+      component: () => import('@/views/NotFound.vue')
     }
   ]
 })
 
 router.beforeEach((to, from, next) => {
-  const token = sessionStorage.getItem(btoa('userdata'))
+  const token = window.localStorage.getItem(btoa('userdata'))
   if (to.matched.some((record) => record.meta.requiresAuth) && !token) {
     next({ name: 'Login' })
   } else {

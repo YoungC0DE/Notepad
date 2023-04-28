@@ -11,6 +11,18 @@
                         <label for="title" class="form-label">Title *</label>
                         <input type="email" class="form-control" id="title" v-model="title" placeholder="Task title">
                     </div>
+                    <div class="col">
+                        <p style="margin-bottom: 0.5rem !important;">Priority *</p>
+                        <div class="input-group mb-3">
+                            <select id="priority" class="form-select" aria-label="Default select example" v-model="priority">
+                                <option value="" selected disabled hidden>Select the Priority</option>
+                                <option value="1"> Not important </option>
+                                <option value="2"> Important </option>
+                                <option value="3"> Urgent </option>
+                            </select>
+                            <span class="input-group-text bg-danger" id="basic-addon1"><i class="bi bi-brightness-alt-high-fill text-white"></i></span>
+                        </div>
+                    </div>
                     <label for="title" class="form-label">Date and Time (optional)</label>
                     <div class="input-group mb-3">
                         <input id="dateTask" min="2000-01-01" max="2050-12-31" name="dateTask" type="date" class="form-control" v-model="date">
@@ -29,18 +41,6 @@
                                 content_css: 'dark'
                             }" />
                     </div>
-                    <div class="col">
-                        <p style="margin-bottom: 0.5rem !important;">Priority *</p>
-                        <div class="input-group mb-3">
-                            <select id="priority" class="form-select" aria-label="Default select example" v-model="priority">
-                                <option value="" selected disabled hidden>Select the Priority</option>
-                                <option value="1"> Not important </option>
-                                <option value="2"> Important </option>
-                                <option value="3"> Urgent </option>
-                            </select>
-                            <span class="input-group-text bg-danger" id="basic-addon1"><i class="bi bi-brightness-alt-high-fill text-white"></i></span>
-                        </div>
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" :disabled="awaitProccess">Close</button>
@@ -57,6 +57,15 @@
 <script>
 import Editor from '@tinymce/tinymce-vue'
 import { collection, query, where, getDocs, addDoc, orderBy, limit } from "firebase/firestore";
+
+// to resolver disabled input into TinyMCe options
+document.addEventListener('focusin', function (e) {
+    var target = e.target;
+    if (target.closest(".mce-window") || target.closest(".tox-dialog")) {
+        e.stopImmediatePropagation();
+        target = null;
+    }
+});
 
 export default {
     inject: ['db'],
@@ -89,7 +98,7 @@ export default {
 
             this.awaitProccess = true;
 
-            const userData = JSON.parse(atob(sessionStorage.getItem(btoa('userdata'))))
+            const userData = JSON.parse(atob(window.localStorage.getItem(btoa('userdata'))))
             const tableItems = collection(this.db, "items");
 
             // Recover the last ID used in collection 'users'

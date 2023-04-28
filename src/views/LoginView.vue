@@ -2,11 +2,11 @@
     <div class="container-login">
         <h1 class="text-white mb-4">Login</h1>
         <div class="form-floating">
-            <input type="email" class="form-control" id="email" placeholder="-" v-model="email">
+            <input type="email" class="form-control" id="email" placeholder="-" v-model="email" v-on:keypress.enter="Login">
             <label for="email" class="text-white">Email</label>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" id="password" placeholder="-" v-model="password">
+            <input type="password" class="form-control" id="password" placeholder="-" v-model="password" v-on:keypress.enter="Login">
             <label for="password" class="text-white">Password</label>
         </div>
         <button type="button" class="btn btn-secondary mt-4" disabled v-if="awaitLogin">
@@ -67,13 +67,17 @@ export default {
                 email: doc.data().email.toLowerCase(),
                 id: doc.data().ID
             }
-
-            sessionStorage.setItem(btoa('userdata'), btoa(JSON.stringify(data)));
+            window.localStorage.setItem(btoa('userdata'), btoa(JSON.stringify(data)));
 
             this.$toast.success(`Welcome Sr(a). ${data.name}`, {
                 position: "top-right"
             })
 
+            this.$router.push({ name: 'Home' })
+        }
+    },
+    mounted() {
+        if (window.localStorage.getItem(btoa('userdata'))) {
             this.$router.push({ name: 'Home' })
         }
     }

@@ -93,11 +93,14 @@ export default {
             return datetime.toLocaleDateString() + " " + datetime.toLocaleTimeString();
         },
         searchByName(search) {
+            if (!search) {
+                return
+            }
+
             this.awaitProccess = true
-            const userdata = JSON.parse(atob(sessionStorage.getItem(btoa('userdata'))))
+            const userdata = JSON.parse(atob(window.localStorage.getItem(btoa('userdata'))))
             const tableItems = collection(this.db, "items");
 
-            const matchValue = (search.toLowerCase()).split(' ')
             const dataItems = query(tableItems, where("fk_user", "==", userdata.id), where("title", "==", search), orderBy('created_at', 'desc'));
 
             getDocs(dataItems).then(resp => {
@@ -119,7 +122,7 @@ export default {
             })
         },
         loadItems() {
-            const userdata = JSON.parse(atob(sessionStorage.getItem(btoa('userdata'))))
+            const userdata = JSON.parse(atob(window.localStorage.getItem(btoa('userdata'))))
             const tableItems = collection(this.db, "items");
             const dataItems = query(tableItems, where("fk_user", "==", userdata.id), orderBy('created_at', 'desc'));
 
