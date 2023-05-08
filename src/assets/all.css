@@ -7,7 +7,10 @@
   box-sizing: border-box;
 }
 
-.mce-notification {display: none !important;}
+.mce-notification, 
+.tox-notifications-container {
+  display: none !important;
+}
 
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
