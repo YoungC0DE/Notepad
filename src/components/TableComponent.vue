@@ -147,9 +147,9 @@ export default {
         this.loadItems()
         
         var el = document.querySelector('.tox.tox-silver-sink.tox-tinymce-aux');
-        el.addEventListener('load', () => {
+        if (el.parentNode) {
             el.parentNode.removeChild(el);
-        })
+        }
         
     }
 }
