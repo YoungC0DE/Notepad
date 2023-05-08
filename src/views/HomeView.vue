@@ -19,16 +19,19 @@ let removeNotify = setInterval(() => {
   }
   count++;
 }, 300)
-console.clear();
-const styles = [
-  'color: orange',
-  'background: white',
-  'font-size: 24px',
-  'border: 1px solid blue',
-  'text-shadow: 2px 2px black',
-  'padding: 10px',
-].join(';');
-console.log('%cWelcome. Execute your advanced test on here!', styles);
+
+setTimeout(() => {
+  console.clear();
+  const styles = [
+    'color: orange',
+    'background: white',
+    'font-size: 24px',
+    'border: 1px solid blue',
+    'text-shadow: 2px 2px black',
+    'padding: 10px',
+  ].join(';');
+  console.log('%cWelcome. Execute your advanced test on here!', styles);
+}, 300)
 
 export default {
   components: { LogoutButton, TableComponent },
