@@ -7,11 +7,6 @@
   box-sizing: border-box;
 }
 
-.mce-notification, 
-.tox-notifications-container {
-  display: none !important;
-}
-
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
