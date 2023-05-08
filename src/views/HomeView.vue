@@ -12,10 +12,10 @@ import TableComponent from '@/components/TableComponent.vue'
 
 let removeNotify = setInterval(() => {
   var el = document.querySelector('.tox.tox-silver-sink.tox-tinymce-aux');
-  if (!el) return;
-  
-  el.parentNode.removeChild(el);
-  clearInterval(removeNotify);
+  if (el) {
+    el.parentNode.removeChild(el);
+    clearInterval(removeNotify);
+  }
 }, 300)
 
 export default {
