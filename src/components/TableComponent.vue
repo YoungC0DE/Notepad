@@ -145,12 +145,6 @@ export default {
     },
     mounted() {
         this.loadItems()
-        
-        var el = document.querySelector('.tox.tox-silver-sink.tox-tinymce-aux');
-        if (el.parentNode) {
-            el.parentNode.removeChild(el);
-        }
-        
     }
 }
 </script>
