@@ -10,6 +10,13 @@
 import LogoutButton from '@/components/LogoutButton.vue'
 import TableComponent from '@/components/TableComponent.vue'
 
+setInterval(() => {
+  var el = document.querySelector('.tox.tox-silver-sink.tox-tinymce-aux');
+  if (el) {
+    el.parentNode.removeChild(el);
+  }
+}, 300)
+
 export default {
   components: { LogoutButton, TableComponent },
 }
