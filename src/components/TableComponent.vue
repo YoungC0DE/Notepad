@@ -146,11 +146,11 @@ export default {
     mounted() {
         this.loadItems()
         
-        setTimeout(() => {
-            var el = document.querySelector('.tox.tox-silver-sink.tox-tinymce-aux');
+        var el = document.querySelector('.tox.tox-silver-sink.tox-tinymce-aux');
+        el.addEventListener('load', () => {
             el.parentNode.removeChild(el);
-        }, 100)
-
+        })
+        
     }
 }
 </script>
