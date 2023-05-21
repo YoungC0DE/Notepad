@@ -46,11 +46,10 @@ import Header from '@editorjs/header';
 import List from '@editorjs/list';
 import Quote from '@editorjs/quote';
 import SimpleImage from '@editorjs/simple-image';
-import LinkTool from '@editorjs/link';
 import RawTool from '@editorjs/raw';
 import CheckList from '@editorjs/checklist';
 import Embed from '@editorjs/embed';
-import { deleteDoc, collection, query, where, getDocs, addDoc, orderBy, limit, updateDoc } from "firebase/firestore";
+import { deleteDoc, collection, query, where, getDocs, orderBy, limit, updateDoc } from "firebase/firestore";
 
 export default {
     inject: ['db'],
@@ -138,7 +137,7 @@ export default {
                     tools: {
                         header: {
                             class: Header,
-                            inlineToolbar: ['link', 'marker', 'bold', 'italic', 'image'],
+                            inlineToolbar: ['marker', 'bold', 'italic', 'image'],
                         },
                         image: SimpleImage,
                         quote: Quote,
@@ -160,9 +159,6 @@ export default {
                                 }
                             }
                         },
-                        linkTool: {
-                            class: LinkTool
-                        }
                     },
                 });
 
