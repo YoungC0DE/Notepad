@@ -49,7 +49,7 @@ import SimpleImage from '@editorjs/simple-image';
 import RawTool from '@editorjs/raw';
 import CheckList from '@editorjs/checklist';
 import Embed from '@editorjs/embed';
-import { deleteDoc, collection, query, where, getDocs, orderBy, limit, updateDoc } from "firebase/firestore";
+import { deleteDoc, collection, query, where, getDocs, orderBy, limit, updateDoc, doc } from "firebase/firestore";
 
 export default {
     inject: ['db'],
