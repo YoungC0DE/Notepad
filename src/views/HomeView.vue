@@ -10,18 +10,6 @@
 import LogoutButton from '@/components/LogoutButton.vue'
 import TableComponent from '@/components/TableComponent.vue'
 
-let count = 0
-let removeNotify = setInterval(() => {
-  var el = document.querySelector('.tox.tox-silver-sink.tox-tinymce-aux');
-  if (el) {
-    el.parentNode.removeChild(el);
-    count >= 2 ? clearInterval(removeNotify) : '';
-  }
-  count++;
-}, 300)
-
-console.warn = () => {};
-
 export default {
   components: { LogoutButton, TableComponent },
 }

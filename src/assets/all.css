@@ -7,9 +7,29 @@
   box-sizing: border-box;
 }
 
-.mce-notification, 
-.tox-notifications-container {
-  display: none !important;
+.editorjs {
+  border-radius: 4px;
+  padding: 10px 15px;
+  background: #c2c4ff21;
+  color: rgb(255, 255, 255);
+  font-family: sans-serif;
+}
+
+.editorjs i {
+  display: inline;
+}
+
+#editorjs_details-task {
+  text-align: initial;
+}
+
+.input-group > *, input {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.ce-inline-toolbar.ce-inline-toolbar--left-oriented.ce-inline-toolbar--showed {
+  color: black;
 }
 
 input:-webkit-autofill,

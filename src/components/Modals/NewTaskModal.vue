@@ -32,14 +32,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description (optional)</label>
-                        <Editor :api-key="tiny_key" v-model="description" :init="{
-                                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tableofcontents footnotes mergetags autocorrect typography inlinecss',
-                                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-                                statusbar: false,
-                                placeholder: 'Type here...',
-                                skin: 'oxide-dark',
-                                content_css: 'dark'
-                            }" />
+                        <div id="editorjs_new-task" class="editorjs"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -55,21 +48,19 @@
 </template>
 
 <script>
-import Editor from '@tinymce/tinymce-vue'
+import EditorJS from "@editorjs/editorjs";
+import Header from '@editorjs/header';
+import List from '@editorjs/list';
+import Quote from '@editorjs/quote';
+import SimpleImage from '@editorjs/simple-image';
+import LinkTool from '@editorjs/link';
+import RawTool from '@editorjs/raw';
+import CheckList from '@editorjs/checklist';
+import Embed from '@editorjs/embed';
 import { collection, query, where, getDocs, addDoc, orderBy, limit } from "firebase/firestore";
-
-// to resolver disabled input into TinyMCe options
-document.addEventListener('focusin', function (e) {
-    var target = e.target;
-    if (target.closest(".mce-window") || target.closest(".tox-dialog")) {
-        e.stopImmediatePropagation();
-        target = null;
-    }
-});
 
 export default {
     inject: ['db'],
-    components: { Editor },
     data() {
         return {
             title: '',
@@ -77,8 +68,46 @@ export default {
             time: null,
             description: null,
             priority: '',
-            awaitProccess: false,
-            tiny_key: import.meta.env.VITE_TINYMCE_API_KEY
+            awaitProccess: false
+        }
+    },
+    setup() {
+        const editor = new EditorJS({
+            holderId: 'editorjs_new-task',
+            placeholder: 'Type some description about this task...',
+            tools: {
+                header: {
+                    class: Header,
+                    inlineToolbar: ['link', 'marker', 'bold', 'italic', 'image'],
+                },
+                image: SimpleImage,
+                quote: Quote,
+                raw: RawTool,
+                checklist: {
+                    class: CheckList,
+                    inlineToolbar: true,
+                },
+                list: {
+                    class: List,
+                    inlineToolbar: true
+                },
+                embed: {
+                    class: Embed,
+                    config: {
+                        services: {
+                            youtube: true,
+                            coub: true
+                        }
+                    }
+                },
+                linkTool: {
+                    class: LinkTool
+                }
+            },
+        });
+
+        return {
+            editor
         }
     },
     methods: {
@@ -95,6 +124,8 @@ export default {
             if (this.validate() == false) {
                 return
             }
+
+            this.description = await this.editor.save()
 
             this.awaitProccess = true;
 
@@ -125,10 +156,6 @@ export default {
 
             addDoc(tableItems, newItem).then(() => {
                 window.location.reload()
-
-                // this.$toast.success('Task registered successfully!', {
-                //     position: "top-right"
-                // })
             }).catch((err) => {
                 this.$toast.error(`Error to create the task: ${err}`, {
                     position: "top-right"

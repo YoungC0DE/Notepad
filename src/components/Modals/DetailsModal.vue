@@ -11,6 +11,10 @@
                         <b>Title</b> <span>{{ values.title }}</span>
                     </div>
                     <div class="d-flex flex-column">
+                        <b>Priority</b>
+                        <span :class="'badge rounded-pill text-' + getPriority(values.priority).color">{{ getPriority(values.priority).label }}</span>
+                    </div>
+                    <div class="d-flex flex-column">
                         <b>Date</b> <span>{{ values.date }}</span>
                     </div>
                     <div class="d-flex flex-column">
@@ -18,29 +22,18 @@
                     </div>
                     <div class="d-flex flex-column w-100">
                         <b>Description</b>
-                        <Editor :api-key="tiny_key" v-model="values.description" disabled :init="{
-                                toolbar: 'code',
-                                readonly: true,
-                                disabled: true,
-                                statusbar: false,
-                                menubar: false,
-                                skin: 'oxide-dark',
-                                content_css: 'dark'
-                            }" />
-                    </div>
-                    <div class="d-flex flex-column">
-                        <b>Priority</b>
-                        <span :class="'badge rounded-pill text-' + getPriority(values.priority).color">{{ getPriority(values.priority).label }}</span>
+                        <div id="editorjs_details-task" class="editorjs"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" style="padding: 1px 15px !important;" disabled v-if="await">
+                    <button type="button" class="btn btn-secondary d-flex flex-row align-items-center" style="padding: 5px 15px !important;" disabled v-if="await">
                         <div class="spinner-border" style="width: 2rem; height: 2rem; border-width: 2px;" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </button>
-                    <button type="button" class="btn btn-danger" @click="deleteItem()" v-else>Delete Item</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-danger" @click="deleteItem()" v-show="!await">Delete</button>
+                    <button type="button" class="btn btn-warning" @click="updateItem()" v-show="!await">Update</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" v-show="!await">Close</button>
                 </div>
             </div>
         </div>
@@ -48,17 +41,25 @@
 </template>
 
 <script>
-import Editor from '@tinymce/tinymce-vue'
-import { doc, deleteDoc } from "firebase/firestore";
+import EditorJS from "@editorjs/editorjs";
+import Header from '@editorjs/header';
+import List from '@editorjs/list';
+import Quote from '@editorjs/quote';
+import SimpleImage from '@editorjs/simple-image';
+import LinkTool from '@editorjs/link';
+import RawTool from '@editorjs/raw';
+import CheckList from '@editorjs/checklist';
+import Embed from '@editorjs/embed';
+import { deleteDoc, collection, query, where, getDocs, addDoc, orderBy, limit, updateDoc } from "firebase/firestore";
 
 export default {
     inject: ['db'],
-    props: { values: Object },
-    components: { Editor },
+    props: ['values'],
     data() {
         return {
             await: false,
-            tiny_key: import.meta.env.VITE_TINYMCE_API_KEY
+            description: '',
+            update: false
         }
     },
     methods: {
@@ -66,17 +67,34 @@ export default {
             const datetime = new Date(data);
             return datetime.toLocaleDateString() + " " + datetime.toLocaleTimeString();
         },
+        async updateItem() {
+            this.update = true;
+            this.await = true;
+
+            const userData = JSON.parse(atob(window.localStorage.getItem(btoa('userdata'))))
+            const tableItems = collection(this.db, "items");
+
+            // Recover the last ID used in collection 'users'
+            const currentItemId = await getDocs(query(tableItems, where('fk_user', "==", userData.id), orderBy("ID", "desc"), limit(1)));
+
+            updateDoc(currentItemId.docs[0].ref, {
+                description: this.description || '-'
+            }).then(() => {
+                window.location.reload()
+            }).catch((err) => {
+                this.$toast.error(`Error to create the task: ${err}`, {
+                    position: "top-right"
+                })
+            });
+        },
         deleteItem() {
             this.await = true
             deleteDoc(doc(this.db, "items", this.values.collection))
                 .then(() => {
                     window.location.reload()
-                    // this.$toast.success('Task deleted!', {
-                    //     position: "top-right"
-                    // })
                 })
                 .catch(() => {
-                    this.$toast.success('Error to delete task.', {
+                    this.$toast.error('Error to delete task.', {
                         position: "top-right"
                     })
                 })
@@ -107,8 +125,56 @@ export default {
                     color: 'bg-danger'
                 }
             }
-
         }
     },
+    watch: {
+        values: {
+            handler(newVal, oldVal) {
+                const desc = JSON.parse(JSON.stringify(newVal)).description
+
+                const editor = new EditorJS({
+                    holderId: 'editorjs_details-task',
+                    data: desc,
+                    tools: {
+                        header: {
+                            class: Header,
+                            inlineToolbar: ['link', 'marker', 'bold', 'italic', 'image'],
+                        },
+                        image: SimpleImage,
+                        quote: Quote,
+                        raw: RawTool,
+                        checklist: {
+                            class: CheckList,
+                            inlineToolbar: true,
+                        },
+                        list: {
+                            class: List,
+                            inlineToolbar: true
+                        },
+                        embed: {
+                            class: Embed,
+                            config: {
+                                services: {
+                                    youtube: true,
+                                    coub: true
+                                }
+                            }
+                        },
+                        linkTool: {
+                            class: LinkTool
+                        }
+                    },
+                });
+
+                this.editor = editor
+            },
+        },
+        update: {
+            async handler(newVal, oldVal) {
+                this.description = await this.editor.save()
+            }
+        }
+
+    }
 }
 </script>
