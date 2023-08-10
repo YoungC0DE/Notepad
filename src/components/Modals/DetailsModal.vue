@@ -33,7 +33,7 @@
                     </button>
                     <button type="button" class="btn btn-danger" @click="deleteItem()" v-show="!await">Delete</button>
                     <button type="button" class="btn btn-warning" @click="updateItem()" v-show="!await">Update</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" v-show="!await">Close</button>
+                    <button type="button" class="btn btn-primary" @click="window.reload()" data-bs-dismiss="modal" v-show="!await">Close</button>
                 </div>
             </div>
         </div>
