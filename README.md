@@ -1,11 +1,11 @@
-# TaskList
+# Notepad
 
 > Project made for organizing monthly shopping list in order to keep track of the total amount spent,
 > along with the quantity of purchased products.
 
 This project was made using Vercel. To Access the project click in this button:
 
-[![TaskList](https://img.shields.io/badge/TaskList-Visit-9cf?style=for-the-badge&logo=vercel)](https://task-list-2.vercel.app/)
+[![Notepad](https://img.shields.io/badge/TaskList-Visit-9cf?style=for-the-badge&logo=vercel)](https://task-list-2.vercel.app/)
 
 ## Technologies
 

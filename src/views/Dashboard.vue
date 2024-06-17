@@ -1,14 +1,14 @@
 <template>
   <div class="container-home">
-    <h1 class="text-white main-title">TASK-LIST</h1>
+    <h1 class="text-white main-title">NOTEPAD</h1>
     <TableComponent />
+    <LogoutButton />
   </div>
-  <LogoutButton />
 </template>
 
 <script>
 import LogoutButton from '@/components/LogoutButton.vue'
-import TableComponent from '@/components/TableComponent.vue'
+import TableComponent from '@/components/dashboard/Table.vue'
 
 export default {
   components: { LogoutButton, TableComponent },
