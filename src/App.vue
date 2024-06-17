@@ -1,17 +1,23 @@
 <template>
-  <main class="main-container">
-    <router-view></router-view>
-    <FooterComponent />
+  <main class="app-main-container">
+    <defautLayout />
   </main>
   <ul class="circles">
-    <li v-for="(item, index) in 10" :key="index"></li>
+    <li v-for="i in CIRCLES_AMOUNT" :key="i"></li>
   </ul>
 </template>
 
 <script lang="js">
-import FooterComponent from '@/components/FooterComponent.vue'
+import defautLayout from '@/components/layouts/default.vue'
 
 export default {
-  components: { FooterComponent }
+  components: { defautLayout },
+  setup() {
+    const CIRCLES_AMOUNT = 10;
+
+    return {
+      CIRCLES_AMOUNT,
+    }
+  },
 }
 </script>

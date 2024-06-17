@@ -1,0 +1,15 @@
+.input-group > *,
+input {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: none;
+    transition: background-color 9999s ease-in-out 0s;
+    color: $white !important;
+    -webkit-text-fill-color: $white;
+}

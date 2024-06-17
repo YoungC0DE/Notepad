@@ -1,0 +1,11 @@
+footer.footer-container {
+    position: absolute;
+    bottom: 0px;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 600px) {
+    footer.footer-container {
+        position: relative;
+    }
+}

@@ -1,0 +1,31 @@
+.container-auth {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem;
+    width: 20rem;
+    color: $white;
+
+    .auth-inputs,
+    .auth-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .auth-inputs input {
+        background-color: $modal-input-bg;
+        padding: 1rem 0.75rem;
+        color: $white;
+    }
+
+    .auth-inputs .fv-plugins-message-container {
+        text-align: center;
+    }
+
+    .auth-inputs input::placeholder {
+        font-size: 1rem;
+        color: $input-placeholder;
+    }
+}

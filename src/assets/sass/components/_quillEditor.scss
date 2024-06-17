@@ -1,0 +1,50 @@
+@import '@vueup/vue-quill/dist/vue-quill.snow.prod.css';
+
+.ql-toolbar,
+.ql-container {
+    border-radius: 4px;
+}
+
+.ql-stroke,
+.ql-picker-label {
+    stroke: #6b7a91 !important;
+    color: #6b7a91 !important;
+}
+
+.ql-editor {
+    overflow: auto;
+    max-height: 20rem;
+    font-size: 1.2rem;
+}
+
+.ql-picker-options {
+    background-color: #4c5367 !important;
+    color: $white;
+    border: none !important;
+    backdrop-filter: blur(10px);
+    :hover {
+        background-color: #646c86 !important;
+    }
+    .ql-picker-item.ql-selected {
+        background-color: #646c86 !important;
+        color: $white !important;
+    }
+
+    .ql-picker-item {
+        border-radius: 4px;
+    }
+}
+
+.ql-picker-label {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+.ql-formats {
+    button:hover {
+        background-color: transparent !important;
+        .ql-stroke {
+            stroke: $white !important;
+        }
+    }
+}
