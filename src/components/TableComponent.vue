@@ -124,7 +124,7 @@ export default {
         loadItems() {
             const userdata = JSON.parse(atob(window.localStorage.getItem(btoa('userdata'))))
             const tableItems = collection(this.db, "items");
-            const dataItems = query(tableItems, where("fk_user", "==", userdata.id), where('version', '!=', 2), orderBy('created_at', 'desc'));
+            const dataItems = query(tableItems, where("fk_user", "==", userdata.id), orderBy('version'), where('version', '!=', 2), orderBy('created_at', 'desc'));
 
             getDocs(dataItems).then(resp => {
                 if (resp.docs.length == 0) {
