@@ -5,7 +5,7 @@
 
 This project was made using Vercel. To Access the project click in this button:
 
-[![Notepad](https://img.shields.io/badge/Notepad-Visit-9cf?style=for-the-badge&logo=vercel)](https://task-list-pi-lyart.vercel.app/)
+[![Notepad](https://img.shields.io/badge/Notepad-Visit-9cf?style=for-the-badge&logo=vercel)](https://notepad-ruddy-one.vercel.app/)
 
 ## Technologies
 
