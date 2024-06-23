@@ -1,6 +1,6 @@
 # Notepad
 
-> This project was created due to my need to make some notes and so that I could consult these notes quickly and safely.
+> This project was created due to my need to make some notes and so that I could consult these notes quickly and safely. <br>
 > It was very rewarding to do this project and it has helped me a lot in my day-to-day life.
 
 This project was made using Vercel. To Access the project click in this button:
