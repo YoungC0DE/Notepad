@@ -171,6 +171,7 @@ export const useAuthStore = defineStore('auth', () => {
         user,
         signIn,
         signUp,
-        fetchUser
+        fetchUser,
+        purgeAuth
     }
 })

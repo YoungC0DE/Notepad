@@ -4,8 +4,11 @@
     justify-content: center;
     gap: 1.5rem;
     padding: 2rem;
-    width: 20rem;
+    width: 16rem;
+    max-width: 16rem;
     color: $white;
+    height: 100%;
+    box-sizing: content-box;
 
     .auth-inputs,
     .auth-actions {

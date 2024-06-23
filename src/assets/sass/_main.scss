@@ -6,6 +6,10 @@
     box-sizing: border-box;
 }
 
+body {
+    background-color: $background;
+}
+
 h1,
 h2,
 h3,
@@ -16,22 +20,12 @@ h6 {
 }
 
 #app {
-    height: 100%;
+    height: 100vh;
     width: 100%;
-    font-family: "Reddit Sans", sans-serif;
+    font-family: 'Reddit Sans', sans-serif;
     font-size: 12pt;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     overflow: auto;
-}
-
-#app .app-main-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
 }

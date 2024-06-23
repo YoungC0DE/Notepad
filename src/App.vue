@@ -1,7 +1,5 @@
 <template>
-  <main class="app-main-container">
-    <defautLayout />
-  </main>
+  <defautLayout />
   <ul class="circles">
     <li v-for="i in CIRCLES_AMOUNT" :key="i"></li>
   </ul>

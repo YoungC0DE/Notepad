@@ -1,16 +1,19 @@
 <template>
-    <i class="bi bi-power btn btn-danger rounded-circle btn-loggout ms-3 mb-3" title="Logout" v-on:click="Logout()"></i>
+    <i class="bi bi-power btn btn-danger btn-loggout" title="Logout" v-on:click="logout"></i>
 </template>
 
 <script>
-import { ROUTE_SIGNIN } from "@/router/index.js";
+import { useAuthStore } from "@/stores/auth.js"
 
 export default {
-    methods: {
-        Logout() {
-            this.$router.push({ name: ROUTE_SIGNIN })
-            window.localStorage.clear()
-            sessionStorage.clear()
+    setup() {
+        const store = useAuthStore();
+        const logout = () => {
+            store.purgeAuth();
+        }
+
+        return {
+            logout
         }
     }
 }

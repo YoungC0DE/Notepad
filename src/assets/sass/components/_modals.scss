@@ -66,3 +66,12 @@
 #createModal select option {
     color: $dark !important;
 }
+
+@media (max-width: 600px) {
+    .modal {
+        &-content {
+            width: 95%;
+            font-size: 14pt;
+        }
+    }
+}
