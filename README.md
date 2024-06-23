@@ -29,13 +29,13 @@ This project was made using Vercel. To Access the project click in this button:
 Clone the project
 
 ```bash
-  git clone https://github.com/YoungC0DE/TaskList
+  git clone https://github.com/YoungC0DE/Notepad
 ```
 
 Go to the project directory
 
 ```bash
-  cd TaskList
+  cd Notepad
 ```
 
 Install dependencies
