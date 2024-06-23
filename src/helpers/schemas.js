@@ -14,3 +14,8 @@ export const SIGNUP = Yup.object().shape({
     .oneOf([Yup.ref('password')], 'The passwords not match')
     .label('Password confirmation')
 });
+
+export const NOTE_UPDATE_CREATE = Yup.object().shape({
+  title: Yup.string().required().label('Title'),
+  description: Yup.string().required().label('Description'),
+});

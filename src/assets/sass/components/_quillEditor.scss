@@ -1,8 +1,25 @@
 @import '@vueup/vue-quill/dist/vue-quill.snow.prod.css';
+@import '../layout/scrollbar';
 
 .ql-toolbar,
 .ql-container {
     border-radius: 4px;
+}
+
+.ql-container.ql-snow,
+.ql-toolbar.ql-snow {
+    border-color: #ffffff70;
+    background-color: #1d212b;
+}
+
+.ql-container {
+    border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+}
+
+.ql-toolbar {
+    border-bottom-right-radius: 0px;
+    border-bottom-left-radius: 0px;
 }
 
 .ql-stroke,

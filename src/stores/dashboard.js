@@ -105,7 +105,8 @@ export const useDashboardStore = defineStore('dashboard', () => {
             let document = await getDocs(prepareQuery);
 
             let update = {
-                description: data.description || ''
+                description: data.description || '',
+                title: data.title || ''
             }
 
             await updateDoc(document.docs[0].ref, update)

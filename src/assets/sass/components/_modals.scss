@@ -34,6 +34,10 @@
         background-color: $modal-input-bg !important;
         color: $white !important;
     }
+
+    input::placeholder {
+        color: $input-placeholder !important;
+    }
 }
 
 #DetailsModal {

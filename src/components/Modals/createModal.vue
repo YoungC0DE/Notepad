@@ -1,7 +1,7 @@
 <template>
     <div class="modal fade" id="newModal" tabindex="-1" aria-labelledby="newModal" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <VForm class="modal-content" id="kt_modal_create_form" @submit="addNewItem" :validation-schema="NOTE_UPDATE_CREATE">
                 <div class="modal-header">
                     <h5 class="modal-title">New Note <i class="bi bi-clipboard-check-fill"></i></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ref="closeModal"></button>
@@ -9,7 +9,7 @@
                 <div class="modal-body text-start">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title <span class="text-danger">*</span></label>
-                        <Field class="form-control form-control-solid" type="text" name="title" placeholder="Note title" v-model="title" />
+                        <Field class="form-control form-control-solid" type="text" name="title" placeholder="Note title" ref="titleInput" />
                         <div class="fv-plugins-message-container">
                             <div class="fv-help-block text-danger">
                                 <ErrorMessage name="title" />
@@ -17,8 +17,14 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="description" class="form-label">Description (optional)</label>
+                        <label for="description" class="form-label">Description <span class="text-danger">*</span></label>
                         <RichTextEditor v-model:content="description" />
+                        <Field class="form-control form-control-solid" type="text" name="description" v-model="description" v-show="false"/>
+                        <div class="fv-plugins-message-container">
+                            <div class="fv-help-block text-danger">
+                                <ErrorMessage name="description" />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -26,9 +32,9 @@
                     <button type="button" class="btn btn-secondary" disabled v-if="awaitProccess">
                         Loading...
                     </button>
-                    <button type="button" class="btn btn-primary" @click="addNewItem" v-else>Save changes</button>
+                    <button type="submit" class="btn btn-primary" v-else>Save changes</button>
                 </div>
-            </div>
+            </VForm>
         </div>
     </div>
 </template>
@@ -38,6 +44,7 @@ import RichTextEditor from "@/components/RichTextEditor.vue"
 import { ErrorMessage, Field, Form as VForm } from "vee-validate";
 import { useDashboardStore } from "@/stores/dashboard.js"
 import ToastHelper from "@/config/ToastHelper.js";
+import { NOTE_UPDATE_CREATE } from "@/helpers/schemas.js"
 
 export default {
     components: {
@@ -48,7 +55,6 @@ export default {
     },
     data() {
         return {
-            title: '',
             description: '',
             awaitProccess: false,
         }
@@ -58,18 +64,14 @@ export default {
 
         return {
             store,
+            NOTE_UPDATE_CREATE
         }
     },
     methods: {
-        async addNewItem() {
+        async addNewItem(values) {
             this.awaitProccess = true;
 
-            let data = {
-                description: this.description,
-                title: this.title
-            }
-
-            await this.store.addNewItem(data);
+            await this.store.addNewItem(values);
 
             this.clearForm();
 
@@ -88,8 +90,8 @@ export default {
             this.qlEditorRef = emit
         },
         clearForm() {
-            this.title = '';
             this.description = '';
+            this.$refs['titleInput'].value = '';
 
             // clear quill editor
             document.querySelector('.ql-editor').innerHTML = '';
