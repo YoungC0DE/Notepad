@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore'
 import firebase from '@/config/services/firebase.js'
 import { getToken, createToken } from '@/config/services/token.js'
+import router, { ROUTE_SIGNIN } from '@/router/index.js'
 
 export const useAuthStore = defineStore('auth', () => {
     const error = []
@@ -139,6 +140,11 @@ export const useAuthStore = defineStore('auth', () => {
             const dataUsers = query(users, where('token', '==', getToken()))
             const { docs } = await getDocs(dataUsers)
 
+            if (docs.length == 0) {
+                purgeAuth();
+                return;
+            }
+
             const doc = docs[0].data()
             doc.password = '';
 
@@ -151,6 +157,13 @@ export const useAuthStore = defineStore('auth', () => {
         } catch (exception) {
             setError(exception, 'Não foi possível carregar os dados do usuário');
         }
+    }
+
+    const purgeAuth = () => {
+        localStorage.clear();
+        sessionStorage.clear();
+
+        router.push({name: ROUTE_SIGNIN});
     }
 
     return {

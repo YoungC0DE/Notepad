@@ -41,6 +41,10 @@ export const useDashboardStore = defineStore('dashboard', () => {
             await authStore.fetchUser()
             let userData = authStore.user.data;
 
+            if (!userData) {
+                return;
+            }
+
             let itemsTable = collection(firebase, ITEMS_COLLECTION)
             let prepareQuery = query(
                 itemsTable,
