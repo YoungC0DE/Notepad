@@ -22,6 +22,14 @@ export const useAuthStore = defineStore('auth', () => {
         user.data = data
     }
 
+    const setError = (exception, customError = '') => {
+        if (import.meta.env.VITE_APP_ENV === 'local') {
+            console.error(exception)
+        }
+
+        error.push(customError)
+    }
+
     const signIn = async (credentials) => {
         // clear previu errors
         error.splice(0, error.length)
@@ -62,8 +70,7 @@ export const useAuthStore = defineStore('auth', () => {
                 id: doc.ID
             })
         } catch (exception) {
-            console.info(exception)
-            error.push('Error in sign in')
+            setError(exception, 'Error in sign in');
         }
     }
 
@@ -112,8 +119,7 @@ export const useAuthStore = defineStore('auth', () => {
                 id: newID
             })
         } catch (exception) {
-            console.info(exception)
-            error.push('Error in sign in')
+            setError(exception, 'Error in sign in');
         }
     }
 
@@ -143,7 +149,7 @@ export const useAuthStore = defineStore('auth', () => {
                 id: doc.ID
             })
         } catch (exception) {
-            console.info(exception)
+            setError(exception, 'Não foi possível carregar os dados do usuário');
         }
     }
 

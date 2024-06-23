@@ -51,14 +51,14 @@
     }
 }
 
-#NewTaskModal input,
-#NewTaskModal textarea,
-#NewTaskModal select {
+#createModal input,
+#createModal textarea,
+#createModal select {
     font-family: Varela Round, sans-serif;
     background-color: $modal-input-bg !important;
     color: $white !important;
 }
 
-#NewTaskModal select option {
+#createModal select option {
     color: $dark !important;
 }

@@ -1,5 +1,5 @@
 <script setup lang="js">
-import { QuillEditor } from "@vueup/vue-quill"
+import { QuillEditor } from "@vueup/vue-quill";
 </script>
 
 <template>
@@ -18,11 +18,11 @@ import { QuillEditor } from "@vueup/vue-quill"
 export default {
   props: {
     minHeight: {type: Number, default: 20},
-    placeholder: {type: String, default: ''}
+    placeholder: {type: String, default: ''},
   },
   data() {
     return {
-      content: ''
+      content: '',
     }
   },
   methods: {
@@ -34,14 +34,14 @@ export default {
       }
 
       e.target.querySelector('.ql-editor').focus();
-    }
+    },
   },
   watch: {
     'content': {
       handler(newVal) {
         this.$emit('input', newVal)
       }
-    }
+    },
   }
 }
 </script>

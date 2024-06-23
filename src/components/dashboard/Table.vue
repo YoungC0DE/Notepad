@@ -1,16 +1,16 @@
 <template>
     <div class="dashboard-table-container">
-        <NewTaskModal />
-        <DetailTaskModal />
+        <createModal />
+        <detailsModal />
         <nav class="navbar">
-            <input type="text" class="form-control input-search" placeholder="Search">
+            <input type="text" class="form-control input-search" placeholder="Search" v-model="search" @keypress.enter="searchItem">
             <button type="button" class="btn btn-secondary" style="padding: 5px 15px !important;" disabled v-if="awaitRequest">
                 <div class="spinner-border" style="width: 1rem; height: 1rem; border-width: 2px;" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </button>
-            <i class="bi bi-search btn btn-outline-primary shadow-none" @click="emitSearch" v-else></i>
-            <i class="bi bi-plus-lg btn btn-outline-success shadow-none"  data-bs-toggle="modal" data-bs-target="#newModal"></i>
+            <i class="bi bi-search btn btn-outline-primary shadow-none" @click="searchItem" v-else></i>
+            <i class="bi bi-plus-lg btn btn-outline-success shadow-none" data-bs-toggle="modal" data-bs-target="#newModal"></i>
         </nav>
         <div class="table-list" v-on:scroll="onScroll">
             <table class="table text-white m-0">
@@ -30,13 +30,16 @@
                     </tr>
                     <tr v-else-if="items.length === 0">
                         <td colspan="5" rowspan="5">
-                            You have no tasks yet... ⛳
+                            {{ oldItems.length > 0 
+                                ? "No results found 🔍"
+                                : "You don't have notes yet... ⛳"
+                            }}
                         </td>
                     </tr>
                     <tr v-for="(item, index) in items" :key="index">
                         <td class="fw-bold">{{ index + 1 }}</td>
                         <td>{{ item.title }}</td>
-                        <td>{{ convertDate(item.created_at) }}</td>
+                        <td>{{ convertDate(item.createdAt) }}</td>
                         <td>
                             <i class="bi bi-eye btn btn-dark d-flex flex-column shadow-none" data-bs-toggle="modal" data-bs-target="#detailModal" @click="setModalData(item)"></i>
                         </td>
@@ -50,14 +53,16 @@
 <script lang="js">
 import { useDashboardStore } from "@/stores/dashboard.js"
 import { convertDate } from '@/helpers/utils.js'
-import NewTaskModal from "@/components/Modals/NewTaskModal.vue"
-import DetailTaskModal from  "@/components/Modals/DetailsTaskModal.vue"
+import createModal from "@/components/Modals/createModal.vue"
+import detailsModal from  "@/components/Modals/detailsModal.vue"
+import ToastHelper from "@/config/ToastHelper.js"
 
 export default {
-    components: { NewTaskModal, DetailTaskModal },
+    components: { createModal, detailsModal },
     data() {
         return {
             items: [],
+            oldItems: [],
             tableHeader: [
                 { text: '#', class: 'fw-bold' },
                 { text: 'Title', class: '' },
@@ -65,10 +70,9 @@ export default {
                 { text: 'Action', class: '' },
             ],
             headerClass: '',
-            itemsCollection: [],
-            emptyList: false,
             forModal: {},
             awaitRequest: false,
+            search: ''
         }
     },
     setup() {
@@ -90,25 +94,43 @@ export default {
         async getAll() {
             this.awaitRequest = true;
             await this.store.getAll();
-            const { error, list } = this.store;
+            let { error, list } = this.store;
 
             this.awaitRequest = false;
-
             if (error.length > 0) {
-                this.$toast.error(error[0], {
-                    position: "top-right"
-                });
+                ToastHelper.error(error[0]);
                 return;
             }
 
             this.items = list;
+            this.oldItems = list;
         },
         setModalData(data) {
             this.forModal = data;
+        },
+        searchItem() {
+            if (this.search == '') {
+                this.items = this.oldItems;
+                return;
+            }
+
+            let search = this.search.toLowerCase();
+            this.items = this.oldItems.filter(
+                ({ title }) => title.toLowerCase().includes(search)
+            )
         }
     },
     async mounted() {
         await this.getAll()
+
+        this.oldItems = this.items;
+    },
+    watch: {
+        'search': {
+            handler(newVal) {
+                this.searchItem();
+            }
+        }
     }
 }
 </script>

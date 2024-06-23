@@ -15,6 +15,12 @@
     overflow: auto;
     max-height: 20rem;
     font-size: 1.2rem;
+
+    ol, 
+    ul {
+        padding: 0px;
+        padding-left: 1.2rem;
+    }
 }
 
 .ql-picker-options {

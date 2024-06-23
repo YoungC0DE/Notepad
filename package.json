@@ -1,6 +1,6 @@
 {
-  "name": "tasklist",
-  "version": "1.0.0",
+  "name": "notepad",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",

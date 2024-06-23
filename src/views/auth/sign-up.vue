@@ -97,14 +97,12 @@ export default {
             const { error, user } = this.store;
 
             this.awaitRequest = false;
-
             if (error.length > 0) {
                 ToastHelper.error(error[0])
                 return;
             }
 
             ToastHelper.success(`Welcome Sr(a). ${user.data.name}`)
-
             this.$router.push({ name: ROUTE_DASHBOARD });
         }
     }

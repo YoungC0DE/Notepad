@@ -21,9 +21,9 @@
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </button>
-                    <button type="button" class="btn btn-danger" @click="deleteItem()" v-show="!awaitProcess">Delete</button>
-                    <button type="button" class="btn btn-warning" @click="updateItem()" v-show="!awaitProcess">Update</button>
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" v-show="!awaitProcess">Close</button>
+                    <button type="button" class="btn btn-danger" @click="deleteItem" v-show="!awaitProcess">Delete</button>
+                    <button type="button" class="btn btn-warning" @click="updateItem" v-show="!awaitProcess">Update</button>
+                    <button type="button" class="btn btn-primary" ref="closeModal" data-bs-dismiss="modal" v-show="!awaitProcess">Close</button>
                 </div>
             </div>
         </div>
@@ -32,6 +32,8 @@
 
 <script lang="js">
 import RichTextEditor from "@/components/RichTextEditor.vue"
+import { useDashboardStore } from "@/stores/dashboard.js"
+import ToastHelper from "@/config/ToastHelper.js"
 
 export default {
     components: {
@@ -43,26 +45,49 @@ export default {
             dataDetail: {}
         }
     },
+    setup() {
+        const store = useDashboardStore();
+
+        return {
+            store,
+        }
+    },
     methods: {
-        convertDate(data) {
-            const datetime = new Date(data);
-            return datetime.toLocaleDateString() + " " + datetime.toLocaleTimeString();
-        },
         async updateItem() {
             this.update = true;
             this.awaitProcess = true;
 
-            //
+            await this.store.updateItem(this.dataDetail);
+
+            this.awaitProcess = false;
+            if (this.store.error.length > 0) {
+                ToastHelper.error(this.store.error[0])
+                return;
+            }
+
+            this.$refs['closeModal'].click();
+            this.$parent.getAll();
         },
-        deleteItem() {
-            this.awaitProcess = true
-            //
+        async deleteItem() {
+            this.update = true;
+            this.awaitProcess = true;
+
+            await this.store.deleteItem(this.dataDetail.ID);
+
+            this.awaitProcess = false;
+            if (this.store.error.length > 0) {
+                ToastHelper.error(this.store.error[0])
+                return;
+            }
+
+            this.$refs['closeModal'].click();
+            this.$parent.getAll();
         },
     },
     watch: {
         '$parent.forModal': {
-            handler(newVal) {
-                this.dataDetail = newVal;
+            handler(value) {
+                this.dataDetail = value;
             }
         }
     }
