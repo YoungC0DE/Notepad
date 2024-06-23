@@ -24,33 +24,6 @@ This project was made using Vercel. To Access the project click in this button:
   <img width="50" title="Prettier" alt="Prettier Logo" src="https://prettier.io/icon.png">
 </div>
 
-## Environment Variables
-
-`VITE_BASE_API=`
-
-`VITE_PROJECT_ID=`
-
-`VITE_API_KEY=`
-
-`VITE_AUTH_DOMAIN=`
-
-`VITE_STORAGE_BUCKET=`
-
-`VITE_MESSAGING_SENDER_ID=`
-
-`VITE_APP_ID=`
-
-`VITE_TINYMCE_API_KEY=`
-
-## Screenshots
-
-<div style="display: flex">
-  <img src="https://user-images.githubusercontent.com/68437256/232347274-0dfd1008-7473-469d-9e77-7f343f57e8af.png"  width="500" height="250">
-  <img src="https://user-images.githubusercontent.com/68437256/232347312-46ed020f-5b67-460e-952f-dfa30b17bc61.png"  width="500" height="250">
-  <img src="https://user-images.githubusercontent.com/68437256/232347356-7c4c2f82-ca85-47d3-84e9-6c84b27705c9.png"  width="500" height="250">
-  <img src="https://user-images.githubusercontent.com/68437256/232347401-d5ee5f08-21cf-4d4c-9497-4a3b5017a178.png"  width="500" height="250">
-<div>
-
 ## Run Locally
 
 Clone the project
