@@ -1,7 +1,7 @@
 <template>
     <div class="modal fade" id="newModal" tabindex="-1" aria-labelledby="newModal" aria-hidden="true">
         <div class="modal-dialog">
-            <VForm class="modal-content" id="kt_modal_create_form" @submit="addNewItem" :validation-schema="NOTE_UPDATE_CREATE">
+            <VForm class="modal-content" ref="kt_modal_create_form" @submit="addNewItem" :validation-schema="NOTE_UPDATE_CREATE">
                 <div class="modal-header">
                     <h5 class="modal-title">New Note <i class="bi bi-clipboard-check-fill"></i></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ref="closeModal"></button>
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" :disabled="awaitProccess">Close</button>
+                    <button type="button" class="btn btn-secondary" @click="closeModal" :disabled="awaitProccess">Close</button>
                     <button type="button" class="btn btn-secondary" disabled v-if="awaitProccess">
                         Loading...
                     </button>
@@ -64,7 +64,7 @@ export default {
 
         return {
             store,
-            NOTE_UPDATE_CREATE
+            NOTE_UPDATE_CREATE,
         }
     },
     methods: {
@@ -73,8 +73,6 @@ export default {
 
             await this.store.addNewItem(values);
 
-            this.clearForm();
-
             this.awaitProccess = false;
             if (this.store.error.length > 0) {
                 ToastHelper.error(this.store.error[0])
@@ -82,9 +80,7 @@ export default {
             }
 
             ToastHelper.success('Added with sucessful');
-
-            this.$refs['closeModal'].click();
-            this.$parent.getAll();
+            this.closeModal();
         },
         setEditorRef(emit) {
             this.qlEditorRef = emit
@@ -95,6 +91,22 @@ export default {
 
             // clear quill editor
             document.querySelector('.ql-editor').innerHTML = '';
+        },
+        async closeModal() {
+            this.clearForm();
+            this.$refs['closeModal'].click();
+            await this.$parent.getAll();
+
+            this.$refs['kt_modal_create_form'].resetForm();
+        }
+    },
+    watch: {
+        'description': {
+            handler(newVal) {
+                if (newVal === '<p><br></p>') {
+                    this.description = ''
+                }
+            }
         }
     }
 }

@@ -1,10 +1,10 @@
 <template>
     <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModal" aria-hidden="true">
         <div class="modal-dialog">
-            <VForm class="modal-content" id="kt_modal_create_form" @submit="updateItem" :validation-schema="NOTE_UPDATE_CREATE">
+            <VForm class="modal-content" ref="kt_modal_create_form" @submit="updateItem" :validation-schema="NOTE_UPDATE_CREATE">
                 <div class="modal-header">
                     <h5 class="modal-title">Details <i class="bi bi-file-text-fill"></i></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ref="closeModal"></button>
                 </div>
                 <div class="modal-body text-start">
                     <div class="mb-3">
@@ -34,8 +34,8 @@
                         </div>
                     </button>
                     <button type="button" class="btn btn-danger" @click="deleteItem" v-show="!awaitProcess">Delete</button>
-                    <button type="submit" class="btn btn-warning" @click="updateItem" v-show="!awaitProcess">Update</button>
-                    <button type="button" class="btn btn-primary" ref="closeModal" data-bs-dismiss="modal" v-show="!awaitProcess">Close</button>
+                    <button type="submit" class="btn btn-warning" v-show="!awaitProcess">Update</button>
+                    <button type="button" class="btn btn-primary" v-show="!awaitProcess" @click="closeModal">Close</button>
                 </div>
             </VForm>
         </div>
@@ -85,8 +85,7 @@ export default {
                 return;
             }
 
-            this.$refs['closeModal'].click();
-            this.$parent.getAll();
+            this.closeModal();
         },
         async deleteItem() {
             this.update = true;
@@ -100,9 +99,14 @@ export default {
                 return;
             }
 
-            this.$refs['closeModal'].click();
-            this.$parent.getAll();
+            this.closeModal();
         },
+        async closeModal() {
+            this.$refs['closeModal'].click();
+            await this.$parent.getAll();
+
+            this.$refs['kt_modal_create_form'].resetForm();
+        }
     },
     watch: {
         '$parent.forModal': {
@@ -112,7 +116,7 @@ export default {
         },
         'dataDetail.description': {
             handler(value) {
-                if (value == '<p><br></p>') {
+                if (value === '<p><br></p>') {
                     this.dataDetail.description = ''
                 }
             }
